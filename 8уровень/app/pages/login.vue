@@ -1,4 +1,4 @@
-<!-- Вход (макет 1.02). Авторизация mock — реальная появится на уровне 4. -->
+<!-- Вход с серверной сессией. -->
 <script setup lang="ts">
 definePageMeta({ layout: 'public', minimalHeader: true })
 useHead({ title: 'Вход' })
@@ -46,7 +46,7 @@ async function submit() {
       <h1 id="login-title" class="login__title">С возвращением</h1>
       <p class="login__subtitle">Войдите для работы с заявками</p>
 
-      <p role="alert">{{ loginError }}</p><form class="login__form" novalidate @submit.prevent="submit">
+      <p v-if="$route.query.registered" role="status">Аккаунт создан. Войдите с вашим email и паролем.</p><p role="alert">{{ loginError }}</p><form class="login__form" novalidate @submit.prevent="submit">
         <UiInput
           v-model="email"
           label="Электронная почта"
@@ -69,7 +69,7 @@ async function submit() {
       </form>
 
       <p class="login__footer">
-        Нет аккаунта? <NuxtLink to="/login">Зарегистрироваться</NuxtLink>
+        Нет аккаунта? <NuxtLink to="/register">Зарегистрироваться</NuxtLink>
       </p>
     </section>
   </div>
@@ -122,4 +122,5 @@ async function submit() {
   }
 }
 </style>
+
 

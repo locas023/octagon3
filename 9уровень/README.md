@@ -48,8 +48,9 @@ Nuxt 4 / Vue 3 / TypeScript / Nitro; Pinia хранит UI preferences. Server s
 
 ## Docker
 
-В `.env` задайте `POSTGRES_PASSWORD` (для Compose используйте URL-safe пароль), затем `docker compose up --build`. Файлы не запускались локально: Docker отсутствует. Внешний deploy и видео не опубликованы.
+В `.env` задайте `POSTGRES_PASSWORD` (для Compose используйте URL-safe пароль), затем `docker compose up --build`. Docker установлен; Compose config валиден. Контейнерный запуск ждёт перезагрузки Windows и включения SVM в BIOS. См. ../DOCKER-SETUP.md. Внешний deploy и видео не опубликованы.
 
 ## Demo и screenshots
 
 Локальное демо: http://127.0.0.1:3009. Сценарий: docs/DEMO.md. Снимок FAQ: docs/screenshots/faq.png. Метрики: docs/PERFORMANCE.md. Ограничения: docs/TRADEOFFS.md и docs/RELEASE-AUDIT.md.
+

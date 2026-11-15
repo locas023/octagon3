@@ -3,12 +3,12 @@ async function signIn(page:import('@playwright/test').Page){await page.goto('/lo
 test('URL filters survive refresh and latest search wins',async({page})=>{
  await signIn(page)
  await page.goto('/requests?q=CRM&sort=oldest')
+ await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true')
  const search=page.getByRole('searchbox').first()
  await expect(search).toHaveValue('CRM')
- await page.reload();await expect(search).toHaveValue('CRM')
+ await page.reload();await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true');await expect(search).toHaveValue('CRM')
  await page.route('**/api/requests?**',async route=>{const url=new URL(route.request().url());if(url.searchParams.get('q')==='slow-query'){await new Promise(resolve=>setTimeout(resolve,900))}await route.continue()})
- await search.fill('slow-query')
- await page.waitForRequest(request=>request.url().includes('q=slow-query'))
+ await Promise.all([page.waitForRequest(request=>request.url().includes('q=slow-query')),search.fill('slow-query')])
  await search.fill('CRM')
  await expect(page).toHaveURL(/q=CRM/)
  await expect(page.getByRole('link',{name:'Не работает доступ к CRM',exact:true})).toBeVisible()
@@ -16,7 +16,9 @@ test('URL filters survive refresh and latest search wins',async({page})=>{
 })
 test('profile density survives refresh',async({page})=>{
  await signIn(page);await page.goto('/profile')
+ await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true')
  await page.getByLabel('Плотность списка').selectOption('compact')
- await page.reload();await expect(page.getByLabel('Плотность списка')).toHaveValue('compact')
+ await page.waitForFunction(()=>localStorage.getItem('workflow-density')==='compact')
+ await page.reload();await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true');await expect(page.getByLabel('Плотность списка')).toHaveValue('compact')
 })
 

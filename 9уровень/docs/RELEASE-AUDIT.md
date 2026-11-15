@@ -18,3 +18,7 @@
 
 Статус: кандидат в релиз, не подтверждённый production release.
 
+
+## Дополнение 16 ноября 2026
+
+Добавлена регистрация Client с транзакцией и защитой от одновременной регистрации одного email. Поле role запрещено во входе. API: создание 201, вход client, повторный email 409. Playwright: 4 passed (регистрация + прежние сценарии). ESLint разбирает Vue, TS и MJS; lint, typecheck, production build проходят. Docker Desktop установлен; CLI/Compose проверены, compose config валиден. Контейнерный runtime ждёт перезагрузки и SVM в BIOS.
