@@ -54,3 +54,5 @@ Nuxt 4 / Vue 3 / TypeScript / Nitro; Pinia хранит UI preferences. Server s
 
 Локальное демо: http://127.0.0.1:3009. Сценарий: docs/DEMO.md. Снимок FAQ: docs/screenshots/faq.png. Метрики: docs/PERFORMANCE.md. Ограничения: docs/TRADEOFFS.md и docs/RELEASE-AUDIT.md.
 
+
+Docker-запуск проверен: приложение и PostgreSQL работают в отдельных контейнерах. Для запуска с генерацией локального пароля: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/docker-start.ps1`. Адрес контейнерной версии — http://127.0.0.1:3019. Подробности и команды тестов: [docs/DOCKER.md](docs/DOCKER.md).

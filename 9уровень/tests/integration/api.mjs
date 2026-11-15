@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-const base=process.env.TEST_URL || 'http://127.0.0.1:3005'
+const base=process.env.TEST_URL || 'http://127.0.0.1:3009'
 async function request(path,options={}) {const r=await fetch(base+path,options); return {status:r.status, data:await r.json(), cookie:r.headers.get('set-cookie')?.split(';')[0]}}
 const json=(body,cookie)=>({method:'POST',headers:{'content-type':'application/json',...(cookie?{cookie}:{})},body:JSON.stringify(body)})
 assert.equal((await request('/api/requests')).status,401)
@@ -14,3 +14,4 @@ const invalid=await request(path,{...json({status:'closed'},cookie),method:'PATC
 const client=await request('/api/auth/login',json({email:'client@workflow.demo',password:'WorkflowDemo2026!'}));assert.equal((await request(path,{headers:{cookie:client.cookie}})).status,404)
 await request('/api/auth/logout',json({},cookie));assert.equal((await request(path,{headers:{cookie}})).status,401)
 console.log('PASS: auth, create, duplicate comment, transition, ownership, logout')
+
