@@ -1,0 +1,2 @@
+import {z} from 'zod'
+export default defineEventHandler(async event=>{const actor=await requireAdmin(event);const parsed=z.object({id:z.string(),active:z.boolean()}).safeParse(await readBody(event));if(!parsed.success||parsed.data.id===actor.id)throw createError({statusCode:422,message:'Нельзя отключить текущего администратора'});const sql=database();await sql`UPDATE users SET data=jsonb_set(data,'{active}',${sql.json(parsed.data.active)}) WHERE id=${parsed.data.id}`;return {ok:true}})

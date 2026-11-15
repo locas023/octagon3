@@ -1,0 +1,6 @@
+<script setup lang="ts">
+defineProps<{help?:boolean}>()
+const search=ref(''), category=ref('')
+const entries=computed(()=>ARTICLES.filter(item=>(!category.value||item.category===category.value)&&item.title.toLowerCase().includes(search.value.toLowerCase())))
+</script>
+<template><div class="container knowledge"><h1>{{help?'Центр помощи':'Статьи и инструкции'}}</h1><p class="muted">Найдите ответ или отправьте обращение</p><UiInput v-model="search" label="Поиск" placeholder="Поиск по базе знаний"/><div class="knowledge-categories"><section v-for="(name,index) in ['Начало работы','Работа с заявками','Сроки и приоритеты']" :key="name" class="panel knowledge-card"><h2>{{name}}</h2><p>{{['Вход, профиль и первая заявка','Статусы, комментарии и результат','Как устроены SLA и эскалация'][index]}}</p><button @click="category=category===name?'':name">{{category===name?'Все категории':'Открыть'}}</button></section></div><h2>{{help?'Популярные инструкции':'Все статьи'}}</h2><NuxtLink v-for="item in entries" :key="item.slug" :to="`/articles/${item.slug}`" class="panel knowledge-card"><h3>{{item.title}}</h3><p>{{item.category}} · 3 минуты</p></NuxtLink><p v-if="!entries.length" role="status">Ничего не найдено</p><UiButton v-if="help" to="/new-request">Создать заявку</UiButton></div></template>

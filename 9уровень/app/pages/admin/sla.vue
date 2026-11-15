@@ -1,0 +1,7 @@
+<script setup lang="ts">
+const {data,refresh,error}=await useFetch<{priority:string;response_minutes:number;resolution_minutes:number}[]>('/api/admin/sla')
+const pending=ref(false),message=ref('')
+async function save(row:NonNullable<typeof data.value>[number]){if(pending.value)return;pending.value=true;try{await $fetch('/api/admin/sla',{method:'PUT',body:row});message.value='Сохранено';await refresh()}catch{message.value='Не удалось сохранить. Проверьте сроки и повторите.'}finally{pending.value=false}}
+</script>
+<template><div class="container knowledge"><h1>Настройки SLA</h1><p>Сроки реакции и решения для каждого приоритета</p><p v-if="error" role="alert">Раздел доступен администратору</p><form v-for="row in data" :key="row.priority" class="panel knowledge-card" @submit.prevent="save(row)"><h2>{{row.priority}}</h2><div class="sla-fields"><label>Время реакции (минуты)<input v-model.number="row.response_minutes" type="number" min="1" required/></label><label>Время решения (минуты)<input v-model.number="row.resolution_minutes" type="number" :min="row.response_minutes" required/></label></div><UiButton type="submit" variant="secondary" :disabled="pending">Сохранить</UiButton></form><p role="status">{{message}}</p></div></template>
+<style scoped>.sla-fields{display:flex;flex-wrap:wrap;gap:24px}label{display:grid;gap:8px}input{padding:12px;background:var(--c-bg);color:inherit;border:1px solid var(--c-border);max-width:100%}</style>

@@ -1,0 +1,68 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "level-1",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "1уровень", "run", "dev"],
+      "port": 3000,
+      "url": "http://127.0.0.1:3000"
+    },
+    {
+      "name": "level-2",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "2уровень", "run", "dev"],
+      "port": 3002,
+      "url": "http://127.0.0.1:3002"
+    },
+    {
+      "name": "level-3",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "3уровень", "run", "dev"],
+      "port": 3003,
+      "url": "http://127.0.0.1:3003"
+    },
+    {
+      "name": "level-4",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "4уровень", "run", "dev"],
+      "port": 3004,
+      "url": "http://127.0.0.1:3004"
+    },
+    {
+      "name": "level-5",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "5уровень", "run", "dev"],
+      "port": 3005,
+      "url": "http://127.0.0.1:3005"
+    },
+    {
+      "name": "level-6",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "6уровень", "run", "dev"],
+      "port": 3006,
+      "url": "http://127.0.0.1:3006"
+    },
+    {
+      "name": "level-7",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "7уровень", "run", "dev"],
+      "port": 3007,
+      "url": "http://127.0.0.1:3007"
+    },
+    {
+      "name": "level-8",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "8уровень", "run", "dev"],
+      "port": 3008,
+      "url": "http://127.0.0.1:3008"
+    },
+    {
+      "name": "level-9",
+      "runtimeExecutable": "npm.cmd",
+      "runtimeArgs": ["--prefix", "9уровень", "run", "dev"],
+      "port": 3009,
+      "url": "http://127.0.0.1:3009"
+    }
+  ]
+}

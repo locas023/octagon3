@@ -1,0 +1,27 @@
+services:
+  db:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_DB: workflow
+      POSTGRES_USER: workflow
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+    volumes:
+      - workflow-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U workflow -d workflow]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  app:
+    build: .
+    ports:
+      - "3009:3000"
+    environment:
+      DATABASE_URL: postgres://workflow:${POSTGRES_PASSWORD}@db:5432/workflow
+      NUXT_PUBLIC_SITE_URL: ${NUXT_PUBLIC_SITE_URL:-http://localhost:3009}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: [sh, -c, "node scripts/setup.mjs && node .output/server/index.mjs"]
+volumes:
+  workflow-data:

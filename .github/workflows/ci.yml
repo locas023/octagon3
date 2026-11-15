@@ -1,0 +1,36 @@
+name: WorkFlow checks
+on: [push, pull_request]
+jobs:
+  final:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: workflow
+          POSTGRES_PASSWORD: ci-only-password
+          POSTGRES_DB: workflow
+        ports: [5432:5432]
+        options: --health-cmd "pg_isready -U workflow" --health-interval 5s --health-retries 20
+    defaults:
+      run:
+        working-directory: 9уровень
+    env:
+      DATABASE_URL: postgres://workflow:ci-only-password@localhost:5432/workflow
+      TEST_URL: http://127.0.0.1:3009
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run db:setup
+      - run: npm run typecheck && npm test && npm run lint && npm run build
+      - run: npx playwright install --with-deps msedge
+      - run: |
+          PORT=3009 HOST=127.0.0.1 node .output/server/index.mjs > /tmp/workflow.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:3009/ >/dev/null && break || sleep 1; done
+          npm run test:integration
+          node tests/integration/business.mjs
+          npm run test:e2e
+          node tests/public-check.mjs

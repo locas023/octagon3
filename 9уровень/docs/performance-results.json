@@ -1,0 +1,56 @@
+{
+  "environment": "local production, Edge",
+  "pages": [
+    {
+      "path": "/",
+      "htmlBytes": 18204,
+      "requestMs": 171,
+      "widths": [
+        360,
+        768,
+        1280
+      ]
+    },
+    {
+      "path": "/faq",
+      "htmlBytes": 13962,
+      "requestMs": 21,
+      "widths": [
+        360,
+        768,
+        1280
+      ]
+    },
+    {
+      "path": "/help",
+      "htmlBytes": 14257,
+      "requestMs": 17,
+      "widths": [
+        360,
+        768,
+        1280
+      ]
+    },
+    {
+      "path": "/articles",
+      "htmlBytes": 14236,
+      "requestMs": 14,
+      "widths": [
+        360,
+        768,
+        1280
+      ]
+    },
+    {
+      "path": "/articles/first-request",
+      "htmlBytes": 12530,
+      "requestMs": 12,
+      "widths": [
+        360,
+        768,
+        1280
+      ]
+    }
+  ],
+  "hydrationErrors": []
+}
