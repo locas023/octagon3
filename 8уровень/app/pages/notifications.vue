@@ -1,12 +1,13 @@
 <script setup lang="ts">
-const {data,error,refresh}=await useFetch<{id:string;message:string;request_id:number;read_at:string|null;created_at:string}[]>('/api/notifications')
+import { useNotifications, markNotification } from '~/features/notifications/data'
+const {data,error,refresh}=await useNotifications()
 const unreadOnly=ref(false),saving=ref(false),message=ref('')
 const entries=computed(()=>(data.value||[]).filter(item=>!unreadOnly.value||!item.read_at))
 const unreadCount=computed(()=>(data.value||[]).filter(item=>!item.read_at).length)
 async function toggle(item:NonNullable<typeof data.value>[number]) {
  if(saving.value)return
  saving.value=true
- try{await $fetch(`/api/notifications/${encodeURIComponent(item.id)}`,{method:'PATCH',body:{read:!item.read_at}});await refresh();message.value='Состояние сохранено'}
+ try{await markNotification(item.id,!item.read_at);await refresh();message.value='Состояние сохранено'}
  catch{message.value='Не удалось сохранить состояние. Повторите попытку.'}
  finally{saving.value=false}
 }

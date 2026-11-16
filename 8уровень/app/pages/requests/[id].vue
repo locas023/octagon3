@@ -61,9 +61,10 @@ async function retry() {
 
           <section class="block panel" aria-labelledby="comments-title">
             <h2 id="comments-title" class="block__title">Комментарии · {{ request.comments.length }}</h2>
-            <RequestComments :comments="request.comments" /><RequestAttachments :id="request.id"/>
+            <RequestComments :comments="request.comments" />
           </section>
 
+          <RequestAttachments :id="request.id"/>
           <section class="block panel" aria-labelledby="history-title">
             <h2 id="history-title" class="block__title">История заявки</h2>
             <RequestTimeline :events="request.timeline" />
@@ -161,5 +162,3 @@ async function retry() {
   }
 }
 </style>
-
-

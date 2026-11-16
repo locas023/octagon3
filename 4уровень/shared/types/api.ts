@@ -19,11 +19,13 @@ export interface ApiUser {
 }
 
 export interface ApiCustomer {
+  active?: boolean
   id: string
   name: string
 }
 
 export interface ApiCategory {
+  active?: boolean
   id: string
   name: string
 }

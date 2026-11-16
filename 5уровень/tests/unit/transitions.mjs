@@ -12,4 +12,3 @@ assert.equal(allowedTransition('client','new','assigned'),false)
 
 assert.equal(allowedTransition('operator','closed','new'),false)
 console.log('PASS: status lifecycle and role restrictions')
-

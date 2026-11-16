@@ -1,4 +1,4 @@
-import type { Ref } from 'vue'
+import { ref, watch, readonly, getCurrentScope, onScopeDispose, type Ref } from 'vue'
 
 /**
  * Возвращает ref, который обновляется только после паузы `delay` мс
@@ -16,8 +16,8 @@ export function useDebouncedRef<T>(source: Ref<T>, delay = 350): Readonly<Ref<T>
     }, delay)
   })
 
-  if (getCurrentInstance()) {
-    onBeforeUnmount(() => clearTimeout(timer))
+  if (getCurrentScope()) {
+    onScopeDispose(() => clearTimeout(timer))
   }
 
   return readonly(debounced) as Readonly<Ref<T>>

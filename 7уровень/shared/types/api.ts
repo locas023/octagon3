@@ -19,11 +19,13 @@ export interface ApiUser {
 }
 
 export interface ApiCustomer {
+  active?: boolean
   id: string
   name: string
 }
 
 export interface ApiCategory {
+  active?: boolean
   id: string
   name: string
 }
@@ -38,6 +40,7 @@ export interface ApiComment {
 export type ApiTimelineEventType = 'created' | 'assigned' | 'status' | 'priority' | 'comment'
 
 export interface ApiTimelineEvent {
+  reason?: string
   id: string
   type: ApiTimelineEventType
   actorId: string | null

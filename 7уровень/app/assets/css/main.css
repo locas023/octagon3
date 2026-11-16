@@ -16,7 +16,7 @@
 
   --c-text: #f3f2ff;
   --c-text-muted: #a6a2cf;
-  --c-text-faint: #77739f;
+  --c-text-faint: #aaa6d0;
 
   --c-accent: #7a5cff;
   --c-accent-2: #c84bc4;
@@ -34,7 +34,7 @@
     radial-gradient(900px 600px at 100% 0%, #221c58 0%, transparent 55%), var(--c-bg);
 
   /* Типографика */
-  --font: 'Montserrat', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font: 'Montserrat Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --fs-xs: 0.75rem;
   --fs-sm: 0.8125rem;
   --fs-md: 0.9375rem;
@@ -234,3 +234,7 @@ ol {
     padding-block: 48px 80px;
   }
 }
+
+
+button { background: transparent; }
+input, select, textarea { min-width: 0; max-width: 100%; }

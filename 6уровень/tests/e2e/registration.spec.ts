@@ -17,4 +17,3 @@ test('client registers, signs in, and cannot self-register as admin', async ({ p
   const injected = await request.post('/api/auth/register', { data: { name: 'Demo user', company: 'Demo company', email: `injected-${crypto.randomUUID()}@workflow.demo`, password: 'TestWorkflow2026!', role: 'admin' } })
   expect(injected.status()).toBe(422)
 })
-

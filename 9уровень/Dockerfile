@@ -15,5 +15,5 @@ COPY --from=build /app/database ./database
 COPY package.json ./package.json
 EXPOSE 3000
 USER node
-CMD ["node", ".output/server/index.mjs"]
+CMD ["node", "scripts/start.mjs"]
 

@@ -1,0 +1,212 @@
+[
+  {
+    "role": "public",
+    "path": "/",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "public",
+    "path": "/faq",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "public",
+    "path": "/help",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "public",
+    "path": "/articles",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "public",
+    "path": "/articles/first-request",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "public",
+    "path": "/login",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "public",
+    "path": "/register",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "client",
+    "path": "/dashboard",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "client",
+    "path": "/requests",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "client",
+    "path": "/profile",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "client",
+    "path": "/notifications",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "client",
+    "path": "/requests/1042",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "client",
+    "path": "/new-request",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "operator",
+    "path": "/dashboard",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "operator",
+    "path": "/requests",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "operator",
+    "path": "/profile",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "operator",
+    "path": "/notifications",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "operator",
+    "path": "/requests/1070",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "operator",
+    "path": "/new-request",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "agent",
+    "path": "/dashboard",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "agent",
+    "path": "/requests",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "agent",
+    "path": "/profile",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "agent",
+    "path": "/notifications",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "agent",
+    "path": "/requests/1071",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/dashboard",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/requests",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/profile",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/notifications",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/requests/1071",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/new-request",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/admin/users",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/admin/customers",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/admin/categories",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/admin/sla",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/admin/analytics",
+    "overflow": [],
+    "violations": []
+  }
+]

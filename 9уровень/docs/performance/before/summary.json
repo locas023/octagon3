@@ -1,0 +1,45 @@
+{
+  "phase": "before",
+  "configuration": "Lighthouse default mobile simulated throttling; local Docker; one diagnostic run per page, not a statistical benchmark",
+  "pages": [
+    {
+      "name": "home",
+      "url": "http://127.0.0.1:3019/",
+      "version": "13.6.0",
+      "fetchTime": "2026-11-15T20:38:45.247Z",
+      "performance": 0.96,
+      "LCP": 2301.5522499999997,
+      "FCP": 2301.5522499999997,
+      "CLS": 0,
+      "TBT": 2.5,
+      "transferBytes": 354940,
+      "accessibility": 1
+    },
+    {
+      "name": "faq",
+      "url": "http://127.0.0.1:3019/faq",
+      "version": "13.6.0",
+      "fetchTime": "2026-11-15T20:38:56.162Z",
+      "performance": 0.97,
+      "LCP": 2156.766,
+      "FCP": 2156.766,
+      "CLS": 0,
+      "TBT": 0,
+      "transferBytes": 351233,
+      "accessibility": 1
+    },
+    {
+      "name": "help",
+      "url": "http://127.0.0.1:3019/help",
+      "version": "13.6.0",
+      "fetchTime": "2026-11-15T20:39:04.144Z",
+      "performance": 0.95,
+      "LCP": 2316.36235,
+      "FCP": 2316.36235,
+      "CLS": 0,
+      "TBT": 4,
+      "transferBytes": 353106,
+      "accessibility": 0.95
+    }
+  ]
+}

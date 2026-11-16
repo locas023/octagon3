@@ -21,4 +21,3 @@ test('profile density survives refresh',async({page})=>{
  await page.waitForFunction(()=>localStorage.getItem('workflow-density')==='compact')
  await page.reload();await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true');await expect(page.getByLabel('Плотность списка')).toHaveValue('compact')
 })
-

@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: octagon3-workflow
+    runtime: docker
+    plan: free
+    rootDir: 9уровень
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: NODE_ENV
+        value: production
+      - key: CREATE_DATABASE
+        value: "false"
+      - key: RUN_MIGRATIONS
+        value: "true"

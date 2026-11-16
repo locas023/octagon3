@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict'
-const base=process.env.TEST_URL || 'http://127.0.0.1:3005'
+const base=process.env.TEST_URL || 'http://127.0.0.1:3006'
 async function request(path,options={}) {const r=await fetch(base+path,options); return {status:r.status, data:await r.json(), cookie:r.headers.get('set-cookie')?.split(';')[0]}}
 const json=(body,cookie)=>({method:'POST',headers:{'content-type':'application/json',...(cookie?{cookie}:{})},body:JSON.stringify(body)})
 assert.equal((await request('/api/requests')).status,401)

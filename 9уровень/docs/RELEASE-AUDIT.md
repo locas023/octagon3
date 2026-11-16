@@ -1,28 +1,15 @@
-# Проверка кандидата в релиз
+# Проверка релиза
 
-- Production build: успешно.
-- Typecheck: успешно.
-- Unit: правила переходов статуса и ролей.
-- API integration: вход, создание, идемпотентность комментария, запрет перехода, приватность заявки, logout.
-- Business integration: admin-only SLA, срок решения, причина эскалации, уведомления, подпись и количество вложений.
-- Regression E2E: гонка поиска, URL refresh и сохранение плотности — 3 tests passed вместе с основным workflow.
-- E2E: login → create → assign → status → comment → logout, затем закрытый route.
-- Public SSR: h1, canonical, 404, отсутствие hydration/JS errors, ширины 360/768/1280.
-- Сессия: случайный токен, SHA-256 в БД, HttpOnly/SameSite cookie, срок 12 часов; production Secure cookie.
-- Права: проверки на сервере; деактивированные аккаунты не входят и не назначаются.
-- Пароли: scrypt с уникальной солью; demo password намеренно опубликован.
-- Вложения: проверка типа по содержимому, max 5 МБ/5 файлов, доступ через заявку, скачивание attachment + nosniff.
-- Env: локальные .env исключены из Git и Docker context.
+Локальная проверка финального Docker-снимка, 16 ноября 2026. Приложение и PostgreSQL healthy; runtime uid 1000, build tooling отсутствует в runtime. Compose запускает миграции и seed, повторный запуск не сбрасывает данные.
 
-Открыто: полный a11y/keyboard audit всех форм; Web Vitals before/after; детальная визуальная сверка всех экранов/ролей; перенос фильтрации в SQL; нормализованные связи предметной области; полнота административного CRUD; Docker/CI запуск; внешняя публикация и видео. ESLint сейчас проверяет JS/MJS, Vue/TS проверяются typecheck; полноценный Vue/TS lint ещё нужен.
+Проверено: typecheck уровней 4–9; unit и Vue/TS/JS lint уровней 5–9. Финал: 10 E2E, API integration, business integration, административный CRUD и историческая аналитика, SQL literal search, архитектурные границы. Комментарий сохраняется в ответе после PATCH заявки. Отдельный тест проверяет заявку и сессию после Docker down/up без удаления тома.
 
-Статус: кандидат в релиз, не подтверждённый production release.
+UI-аудит: 35 сочетаний роли/маршрута, overflow 360/768/1280, axe WCAG 2 A/AA + 2.1 AA на desktop. JSON и screenshots в `audit/`. Keyboard E2E проверяет вход, меню со стрелками/Escape, modal focus return. Публичный SSR проверен отдельно; замеры Lighthouse и ограничения — PERFORMANCE.md.
 
+Сессии: случайный токен, SHA-256 в БД, HttpOnly/SameSite, срок 12 часов, production Secure. Пароли scrypt с уникальной солью. Регистрация не принимает роль. Авторизация проверяется на сервере, закрытая сущность возвращает 404, admin-only endpoints — 403. Деактивация отзывает сессии, назначение неактивному Agent запрещено. Вложения проверяются по содержимому и отдаются с attachment/nosniff.
 
-## Дополнение 16 ноября 2026
+Env исключены из Git и Docker context; demo-аккаунты вымышленные. Production npm audit: 0 high/critical; оставшиеся low/moderate отражены в отчёте. Проверки не являются аудитом безопасности сторонней организацией или нагрузочным тестом.
 
-Добавлена регистрация Client с транзакцией и защитой от одновременной регистрации одного email. Поле role запрещено во входе. API: создание 201, вход client, повторный email 409. Playwright: 4 passed (регистрация + прежние сценарии). ESLint разбирает Vue, TS и MJS; lint, typecheck, production build проходят. Docker Desktop установлен; CLI/Compose проверены, compose config валиден. Контейнерный runtime ждёт перезагрузки и SVM в BIOS.
+Чистый Compose-проект с новой базой прошёл миграции, seed, API/business/admin-analytics и все 10 E2E. Проверены background SLA и сохранность сессии/заявки после down/up. Краткое demo-видео записано и просмотрен контрольный кадр.
 
-## Проверенный Docker-запуск
-
-Приложение и PostgreSQL запущены Compose на 127.0.0.1:3019, оба healthy. API integration и business integration прошли, включая read/unread уведомлений и запрет изменения чужого уведомления. Отдельный тест сохранил заявку и серверную сессию после down/up без удаления тома. Runtime работает uid 1000, TypeScript не установлен. Seed JSON генерируется при сборке. Zod обновлена после audit; остаются low/moderate зависимости Nuxt tooling, high/critical нет.
+GitHub CI, release tag и внешний deployment следует проверять по состоянию репозитория и STATUS.md. Локальный успех не доказывает успешный публичный deploy; cloud setup описан в DEPLOY.md.

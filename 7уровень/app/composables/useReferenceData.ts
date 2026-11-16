@@ -1,13 +1,15 @@
-import type { ApiCategory, ApiCustomer, ApiUser } from '#shared/types/api'
+import { useUserReference } from '~/features/users/data'
+import { useCustomerReference } from '~/features/customers/data'
+import { useCategoryReference } from '~/features/categories/data'
 
 /**
  * Справочники (пользователи, клиенты, категории).
  * Ключи useFetch общие, поэтому данные загружаются один раз и переиспользуются страницами.
  */
 export function useReferenceData() {
-  const users = useFetch<ApiUser[]>('/api/users', { key: 'ref-users', default: () => [] })
-  const customers = useFetch<ApiCustomer[]>('/api/customers', { key: 'ref-customers', default: () => [] })
-  const categories = useFetch<ApiCategory[]>('/api/categories', { key: 'ref-categories', default: () => [] })
+  const users = useUserReference()
+  const customers = useCustomerReference()
+  const categories = useCategoryReference()
 
   const lookups = computed(() =>
     createLookups(users.data.value, customers.data.value, categories.data.value),

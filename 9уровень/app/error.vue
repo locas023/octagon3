@@ -5,6 +5,7 @@ import type { NuxtError } from '#app'
 const props = defineProps<{ error: NuxtError }>()
 
 const is404 = computed(() => props.error.statusCode === 404)
+const is403 = computed(() => props.error.statusCode === 403)
 
 useHead({ title: is404.value ? 'Страница не найдена' : 'Ошибка' })
 
@@ -17,9 +18,9 @@ function goBack() {
   <main class="error-page">
     <div class="error-page__inner">
       <p class="error-page__code">{{ error.statusCode }}</p>
-      <h1 class="error-page__title">{{ is404 ? 'Страница не найдена' : 'Что-то пошло не так' }}</h1>
+      <h1 class="error-page__title">{{ is404 ? 'Страница не найдена' : is403 ? 'Доступ запрещён' : 'Что-то пошло не так' }}</h1>
       <p class="error-page__text">
-        {{ is404 ? 'Проверьте адрес или вернитесь к заявкам.' : 'Сервис временно недоступен. Попробуйте ещё раз позже.' }}
+        {{ is404 ? 'Проверьте адрес или вернитесь к заявкам.' : is403 ? 'У вашей роли нет доступа к этому разделу.' : 'Сервис временно недоступен. Попробуйте ещё раз позже.' }}
       </p>
       <UiButton @click="goBack">Вернуться к заявкам</UiButton>
     </div>

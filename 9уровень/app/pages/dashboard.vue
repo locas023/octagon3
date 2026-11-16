@@ -3,6 +3,8 @@
 import type { ApiRequestListItem, Paginated } from '#shared/types/api'
 
 useHead({ title: 'Обзор' })
+const actor=useCurrentUser()
+const subtitle=computed(()=>actor.value.role==='client'?'Ваши обращения в поддержку':actor.value.role==='agent'?'Работа по назначенным вам заявкам':actor.value.role==='admin'?'Контроль работы сервиса':'Обзор работы поддержки')
 
 const { lookups } = useReferenceData()
 const { data, error, status, refresh } = useFetch<Paginated<ApiRequestListItem>>('/api/requests', {
@@ -17,7 +19,7 @@ const uiError = computed(() => (error.value ? toUiError(error.value) : null))
 
 <template>
   <div class="page container">
-    <UiPageHeader title="Обзор" subtitle="Обзор работы поддержки" />
+    <UiPageHeader title="Обзор" :subtitle="subtitle" />
 
     <DashboardStatsGrid />
 

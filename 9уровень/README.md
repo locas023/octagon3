@@ -1,58 +1,73 @@
-# WorkFlow — уровень 9
+# WorkFlow
 
-Финальная версия, Docker Compose, аудит и документация
+Учебная система поддержки: клиент создаёт заявку, оператор назначает исполнителя, исполнитель фиксирует работу и решение. Администратор управляет справочниками, SLA и аналитикой. Четыре роли получают разные права на сервере и в интерфейсе.
 
-## Запуск
+Nuxt 4, Vue 3, TypeScript, Nitro, Pinia, PostgreSQL 17, Zod, Playwright, Vitest, Docker Compose. Это финальный самостоятельный снимок; папки 1–8 показывают предыдущие этапы.
 
-Откройте терминал в этой папке:
+## Демо и запуск
+
+Локальный Docker demo: [127.0.0.1:3019](http://127.0.0.1:3019). Публичный URL появится после подключения облачной базы и Render; инструкция в [DEPLOY.md](docs/DEPLOY.md).
+
+Из этой папки в PowerShell при запущенном Docker Desktop:
 
 ```powershell
-npm.cmd install
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/docker-start.ps1
+```
+
+Скрипт создаёт игнорируемый `.env.compose` со случайным паролем, собирает приложение, запускает миграции и seed, ждёт healthcheck. База не публикует порт на хост; данные сохраняются в именованном томе. [Подробности Docker](docs/DOCKER.md).
+
+Без Docker: Node 22 и PostgreSQL 17, скопировать `.env.example` в `.env`, указать свой DATABASE_URL:
+
+```powershell
+npm.cmd ci
 npm.cmd run db:setup
 npm.cmd run dev
 ```
 
-Адрес: http://127.0.0.1:3009. Соседние уровни запускаются на своих портах.
+Dev URL: [127.0.0.1:3009](http://127.0.0.1:3009). `db:setup` по умолчанию создаёт базу при наличии соответствующих прав. Для заранее созданной базы задать `CREATE_DATABASE=false`.
 
-Для локального запуска нужен .env с DATABASE_URL из .env.example. В этой рабочей папке он уже подготовлен. Скрипт db:setup создаёт базу, таблицы и demo accounts.
+Учебные аккаунты: `client@workflow.demo`, `operator@workflow.demo`, `agent@workflow.demo`, `admin@workflow.demo`. Общий демонстрационный пароль: `WorkflowDemo2026!`. Данные вымышленные; регистрация создаёт только Client.
 
-## Демо
+## Возможности
 
-Уровни 4–9: admin@workflow.demo, operator@workflow.demo, agent@workflow.demo, client@workflow.demo. Пароль: WorkflowDemo2026!.
+- URL-фильтры, поиск с debounce, пагинация, пустые состояния и повтор загрузки.
+- Optimistic priority, rollback при ошибках, Undo, идемпотентные комментарии.
+- Серверные сессии, права четырёх ролей, профиль, CRUD пользователей/клиентов/категорий.
+- История статусов и причин, сроки SLA, эскалация, уведомления read/unread, вложения с проверкой содержимого.
+- Аналитика периода: статусы, исторический SLA, среднее время решения и текущая загрузка.
+- SSR landing, FAQ, помощь и статьи с metadata, canonical, sitemap, robots и корректными 404.
 
-Публичная главная: `/`; приложение: `/dashboard`, `/requests`, `/profile`. Создание: `/new-request`; выход: `/logout`. Уровни 6–9: `/faq`, `/help`, `/articles`. Уровни 8–9: `/admin/sla`, `/admin/analytics`, `/notifications`.
+## Архитектура и сложные места
+
+UI обращается к feature-адаптерам и composables; Nitro вызывает сервисы и SQL repositories. Общие правила переходов не зависят от Vue. Состояние сервера живёт в useFetch, фильтры — в URL, настройки интерфейса — в Pinia.
+
+Особого внимания потребовали конкурентная отправка комментария, сериализация JSONB, rollback с Undo, гонка поисковых запросов и сохранение исторического deadline для аналитики. Решения и ограничения: [ARCHITECTURE](docs/ARCHITECTURE.md), [TRADEOFFS](docs/TRADEOFFS.md), [REGRESSIONS](docs/REGRESSIONS.md), [AI_USED](docs/AI_USED.md).
 
 ## Проверки
 
 ```powershell
 npm.cmd run typecheck
-npm.cmd run build
-```
-
-Начиная с уровня 5:
-
-```powershell
 npm.cmd test
 npm.cmd run lint
+node tests/architecture.mjs
+$env:TEST_URL='http://127.0.0.1:3019'
 npm.cmd run test:integration
+npm.cmd run test:business
+node tests/integration/admin-analytics.mjs
 npm.cmd run test:e2e
+node tests/public-check.mjs
+node tests/accessibility.mjs
 ```
 
-API/E2E требуют работающий сервер и seed. Playwright использует установленный Edge. Папки являются самостоятельными снимками; зависимости устанавливаются отдельно. Локальные `.env` исключены из Git. При одинаковом DATABASE_URL уровни 4–9 используют одну локальную базу.
+Для E2E нужен Edge (`npx.cmd playwright install msedge`), для видео также `npx.cmd playwright install ffmpeg`. Тесты создают учебные записи. Проверка сохранности Docker-тома: `npm.cmd run test:docker`; она перезапускает контейнеры. Браузерных сценариев — 10; проверка доступности охватывает 35 сочетаний роли и маршрута, ширины 360/768/1280.
 
-## Архитектура
+[GitHub Actions](https://github.com/locas023/octagon3/actions) проверяет финальный снимок с PostgreSQL на чистом runner. [Release audit](docs/RELEASE-AUDIT.md) отделяет выполненные проверки от ограничений.
 
-Nuxt 4 / Vue 3 / TypeScript / Nitro; Pinia хранит UI preferences. Server state — useFetch, фильтры — URL. PostgreSQL и сессии находятся на сервере. Shared содержит общие модели и правила. Уровни 7–9: `docs/ARCHITECTURE.md`.
+## Performance и изображения
 
-Точное состояние выполнения и ограничения: `../STATUS.md`. Изображения интерфейса и численные проверки финальной сборки: `../9уровень/docs/`.
+Диагностический Lighthouse mobile: LCP публичных страниц после оптимизации 0,76–0,91 с, CLS 0, performance 100. По одному локальному прогону; это не полевые метрики. Методика, baseline и сырые отчёты: [PERFORMANCE](docs/PERFORMANCE.md).
 
-## Docker
+![Главная](docs/audit/screenshots/public-_-1280.png)
+![Аналитика администратора](docs/audit/screenshots/admin-_admin_analytics-1280.png)
 
-В `.env` задайте `POSTGRES_PASSWORD` (для Compose используйте URL-safe пароль), затем `docker compose up --build`. Docker установлен; Compose config валиден. Контейнерный запуск ждёт перезагрузки Windows и включения SVM в BIOS. См. ../DOCKER-SETUP.md. Внешний deploy и видео не опубликованы.
-
-## Demo и screenshots
-
-Локальное демо: http://127.0.0.1:3009. Сценарий: docs/DEMO.md. Снимок FAQ: docs/screenshots/faq.png. Метрики: docs/PERFORMANCE.md. Ограничения: docs/TRADEOFFS.md и docs/RELEASE-AUDIT.md.
-
-
-Docker-запуск проверен: приложение и PostgreSQL работают в отдельных контейнерах. Для запуска с генерацией локального пароля: `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/docker-start.ps1`. Адрес контейнерной версии — http://127.0.0.1:3019. Подробности и команды тестов: [docs/DOCKER.md](docs/DOCKER.md).
+[Все снимки](docs/audit/screenshots), [видео](docs/demo/workflow-demo.webm), [сценарий демонстрации на 5 минут](docs/DEMO.md).

@@ -25,12 +25,21 @@ jobs:
           node-version: 22
       - run: npm ci
       - run: npm run db:setup
-      - run: npm run typecheck && npm test && npm run lint && npm run build
+      - run: npm run typecheck && npm test && npm run lint && node tests/architecture.mjs && npm run build
       - run: npx playwright install --with-deps msedge
       - run: |
           PORT=3009 HOST=127.0.0.1 node .output/server/index.mjs > /tmp/workflow.log 2>&1 &
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:3009/ >/dev/null && break || sleep 1; done
+          curl -fsS http://127.0.0.1:3009/ >/dev/null
           npm run test:integration
           node tests/integration/business.mjs
+          node tests/integration/admin-analytics.mjs
           npm run test:e2e
           node tests/public-check.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: workflow-test-results
+          path: |
+            9уровень/test-results
+            9уровень/docs/performance-results.json

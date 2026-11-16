@@ -37,8 +37,7 @@ export async function patchRequest(event: H3Event) {
     if(body.status) item.status=body.status
     if(body.assigneeId!==undefined) item.assigneeId=body.assigneeId
     await sql`UPDATE requests SET data=${sql.json({ ...item, comments:item.comments.map(c=>({...c})), timeline:item.timeline.map(e=>({...e})) })}, version=version+1 WHERE id=${item.id}`
-    return item
+    const comments=await sql`SELECT data FROM comments WHERE request_id=${item.id} ORDER BY data->>'createdAt'`
+    return {...item,comments:comments.map(row=>row.data as ApiRequest['comments'][number])}
   })
 }
-
-

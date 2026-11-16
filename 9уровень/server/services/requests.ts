@@ -1,11 +1,13 @@
 import type { H3Event } from 'h3'
-import type { ApiRequest } from '#shared/types/api'
+import type { ApiRequest, ApiComment } from '#shared/types/api'
 import { allowedTransition } from '#shared/utils/transitions'
 import { z } from 'zod'
 export async function visibleRequests(event: H3Event) {
   const user=await requireUser(event)
-  const rows=await database()`SELECT data FROM requests ORDER BY id DESC`
-  return rows.map(row=>row.data as ApiRequest).filter(item=>canRead(user,item))
+  const sql=database()
+  const access=user.role==='client'?sql`data->>'customerId'=${user.id}`:user.role==='agent'?sql`data->>'assigneeId'=${user.id}`:sql`true`
+  const rows=await sql`SELECT data FROM requests WHERE ${access} ORDER BY id DESC`
+  return rows.map(row=>row.data as ApiRequest)
 }
 export async function findRequest(event: H3Event) {
   const user=await requireUser(event)
@@ -32,18 +34,24 @@ export async function patchRequest(event: H3Event) {
       const agents=await sql`SELECT data FROM users WHERE id=${body.assigneeId}`
       if(!agents[0]?.data.active || agents[0].data.role!=='agent') throw createError({statusCode:422,statusMessage:'Исполнитель деактивирован или не является Agent'})
     }
-    for(const key of ['priority','status','assigneeId'] as const) if(body[key]!==undefined && body[key]!==item[key]) item.timeline.unshift({id:crypto.randomUUID(),type:key==='assigneeId'?'assigned':key,actorId:user.id,value:body[key],createdAt:new Date().toISOString()})
-    if(body.assigneeId || body.status==='escalated') {
-      const targets=body.assigneeId?[{id:body.assigneeId}]:await sql`SELECT id FROM users WHERE data->>'role' IN ('operator','admin')`
+    if(body.priority && body.priority!==item.priority) {
+      const policy=await sql`SELECT resolution_minutes FROM sla WHERE priority=${body.priority}`
+      item.dueAt=new Date(new Date(item.createdAt).getTime()+Number(policy[0]?.resolution_minutes||1440)*60000).toISOString()
+    }
+    for(const key of ['priority','status','assigneeId'] as const) if(body[key]!==undefined && body[key]!==item[key]) {
+      const change={id:crypto.randomUUID(),type:key==='assigneeId'?'assigned' as const:key,actorId:user.id,value:body[key],createdAt:new Date().toISOString(),reason:body.reason?.trim()}
+      item.timeline.unshift(change)
+      await sql`INSERT INTO request_events(id,request_id,kind,status,actor_id,reason,occurred_at,deadline_at) VALUES(${change.id},${item.id},${change.type},${key==='status'?body.status!:null},${user.id},${change.reason||null},${change.createdAt},${item.dueAt||null})`
+    }
+    if((body.assigneeId && body.assigneeId!==item.assigneeId) || (body.status==='escalated'&&item.status!=='escalated')) {
+      const targets=body.status==='escalated'?await sql`SELECT id FROM users WHERE data->>'role' IN ('operator','admin')`:[{id:body.assigneeId!}]
       for(const target of targets) await sql`INSERT INTO notifications(id,user_id,request_id,message) VALUES(${crypto.randomUUID()},${target.id},${item.id},${body.status==='escalated'?`Эскалация #${item.id}: ${body.reason}`:`Вам назначена заявка #${item.id}`})`
     }
     if(body.priority) item.priority=body.priority
     if(body.status) item.status=body.status
     if(body.assigneeId!==undefined) item.assigneeId=body.assigneeId
     await sql`UPDATE requests SET data=${sql.json({ ...item, comments:item.comments.map(c=>({...c})), timeline:item.timeline.map(e=>({...e})) })}, version=version+1 WHERE id=${item.id}`
-    return item
+    const comments=await sql`SELECT data FROM comments WHERE request_id=${item.id} ORDER BY data->>'createdAt'`
+    return {...item,comments:comments.map(row=>row.data as ApiComment)}
   })
 }
-
-
-

@@ -22,6 +22,6 @@ for(const role of ['admin','operator','agent','client']) {
 await sql`INSERT INTO customers(id,data) VALUES('client','{"id":"client","name":"Демо-компания"}') ON CONFLICT DO NOTHING`
 await sql`INSERT INTO categories(id,data) VALUES('it','{"id":"it","name":"IT-поддержка"}') ON CONFLICT DO NOTHING`
 await seedFixtures(sql,hash)
+await sql.unsafe(await readFile(new URL('../database/003-history-indexes.sql',import.meta.url),'utf8'))
 await sql.end()
 console.log('Схема и demo accounts созданы. Пароль демо: WorkflowDemo2026!')
-

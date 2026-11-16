@@ -11,6 +11,7 @@ const name = ref(user.value.name)
 const email = ref(user.value.email)
 const submitted = ref(false)
 const saved = ref(false)
+const saving=ref(false),saveError=ref('')
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -27,12 +28,14 @@ const isDirty = computed(
   () => name.value.trim() !== user.value.name || email.value.trim() !== user.value.email,
 )
 
-function save() {
+async function save() {
+  if(saving.value)return
   submitted.value = true
   if (nameError.value || emailError.value) return
-  user.value = { ...user.value, name: name.value.trim(), email: email.value.trim() }
-  saved.value = true
-  setTimeout(() => (saved.value = false), 2500)
+  saving.value=true;saveError.value=''
+  try{user.value=await $fetch<typeof user.value>('/api/auth/profile',{method:'PATCH',body:{name:name.value.trim(),email:email.value.trim()}});saved.value=true}
+  catch(error){saveError.value=toUiError(error).message}
+  finally{saving.value=false}
 }
 
 const densityOptions: SelectOption<ListDensity>[] = [
@@ -41,7 +44,7 @@ const densityOptions: SelectOption<ListDensity>[] = [
 ]
 
 async function logout() {
-  await navigateTo('/login')
+  await navigateTo('/logout')
 }
 </script>
 
@@ -64,7 +67,8 @@ async function logout() {
           />
           <p class="profile__role">Роль: {{ ROLE_LABELS[user.role].toLowerCase() }}</p>
           <div class="profile__actions">
-            <UiButton type="submit" :disabled="!isDirty">Сохранить изменения</UiButton>
+            <UiButton type="submit" :disabled="!isDirty || saving">Сохранить изменения</UiButton>
+            <p v-if="saveError" role="alert">{{saveError}}</p>
             <p class="profile__status" role="status" aria-live="polite">
               <template v-if="saved">Изменения сохранены</template>
             </p>

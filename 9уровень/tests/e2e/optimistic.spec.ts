@@ -1,0 +1,23 @@
+import {test,expect} from '@playwright/test'
+for(const status of [409,500])test(`optimistic priority rollback after ${status}, then Undo`,async({page})=>{
+ await page.goto('/login');await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true')
+ await page.getByLabel('Электронная почта').fill('operator@workflow.demo');await page.getByLabel('Пароль').fill('WorkflowDemo2026!');await page.getByRole('button',{name:'Войти',exact:true}).click();await expect(page).toHaveURL(/dashboard/)
+ const created=await page.request.post('/api/requests',{data:{title:`Rollback ${status}`}});expect(created.status()).toBe(201);const {id}=await created.json()
+ await page.goto(`/requests/${id}`);await page.waitForFunction(()=>document.documentElement.dataset.appReady==='true')
+ let release!:()=>void
+ const gate=new Promise<void>(resolve=>{release=resolve})
+ await page.route(`**/api/requests/${id}`,async route=>{if(route.request().method()!=='PATCH')return route.continue();await gate;await route.fulfill({status,contentType:'application/json',body:JSON.stringify({statusCode:status,message:status===409?'Конфликт изменения':'Сервер недоступен'})})})
+ const priority=page.getByRole('combobox',{name:'Приоритет',exact:true})
+ await priority.selectOption('high')
+ await expect(page.locator('.request-head__badges').getByText('Высокий',{exact:true})).toBeVisible()
+ release()
+ await expect(page.getByRole('status',{name:'Сохранение заявки'})).not.toHaveText('Сохранение…')
+ await expect(priority).toHaveValue('normal')
+ await page.unroute(`**/api/requests/${id}`)
+ await priority.selectOption('high');await expect(page.getByRole('status',{name:'Сохранение заявки'})).toHaveText('Изменение сохранено')
+ const undoResponse=page.waitForResponse(response=>response.url().endsWith(`/api/requests/${id}`)&&response.request().method()==='PATCH')
+ await page.getByRole('button',{name:'Отменить последнее изменение (Undo)'}).click()
+ expect((await undoResponse).status()).toBe(200)
+ await expect(priority).toHaveValue('normal')
+ const detail=await page.request.get(`/api/requests/${id}`).then(r=>r.json());expect(detail.priority).toBe('normal')
+})

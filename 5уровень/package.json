@@ -13,7 +13,7 @@
     "test:integration": "node tests/integration/api.mjs",
     "test:e2e": "playwright test",
     "lint": "eslint .",
-    "test": "node tests/unit/transitions.mjs"
+    "test": "node tests/unit/transitions.mjs && vitest run"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.11.3",
@@ -28,7 +28,10 @@
     "@playwright/test": "^1.65.1",
     "@types/node": "^26.6.6",
     "eslint": "^10.15.0",
+    "eslint-plugin-vue": "^10.12.1",
     "typescript": "^5.8.0",
+    "typescript-eslint": "^8.72.2",
+    "vitest": "^5.1.0",
     "vue-tsc": "^3.0.0"
   }
 }

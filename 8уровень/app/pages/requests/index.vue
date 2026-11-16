@@ -5,6 +5,8 @@
 -->
 <script setup lang="ts">
 useHead({ title: 'Заявки' })
+const actor=useCurrentUser()
+const heading=computed(()=>actor.value.role==='client'?'Мои заявки':actor.value.role==='agent'?'Назначенные мне заявки':'Рабочий день под контролем')
 
 const route = useRoute()
 const router = useRouter()
@@ -33,30 +35,18 @@ async function retry() {
   }
 }
 
-const scenarios = [
-  { value: undefined, label: 'Данные' },
-  { value: 'slow', label: 'Медленный ответ' },
-  { value: 'empty', label: 'Пустой ответ' },
-  { value: '500', label: 'Ошибка 500' },
-  { value: '429', label: 'Ошибка 429' },
-] as const
-
-function scenarioLink(value: string | undefined) {
-  const { simulate: _simulate, ...rest } = route.query
-  return { query: value ? { ...rest, simulate: value } : rest }
-}
 </script>
 
 <template>
   <div class="page container">
-    <UiPageHeader title="Рабочий день под контролем" subtitle="Заявки, которые требуют вашего внимания" />
+    <UiPageHeader :title="heading" subtitle="Заявки, которые требуют вашего внимания" />
 
     <DashboardStatsGrid />
 
     <section aria-labelledby="requests-title">
       <div class="requests__head">
         <h2 id="requests-title" class="requests__title">Заявки</h2>
-        <UiButton disabled title="Создание заявок появится после подключения сервера (уровень 4)">
+        <UiButton v-if="actor.role!=='agent'" to="/new-request">
           <AppIcon name="plus" :size="16" />
           Создать заявку
         </UiButton>
@@ -91,19 +81,6 @@ function scenarioLink(value: string | undefined) {
           <UiPagination v-if="pageCount > 1" v-model="page" :page-count="pageCount" />
         </div>
       </template>
-
-      <nav class="scenarios" aria-label="Демо-сценарии ответа API">
-        <span class="muted">Демо API:</span>
-        <NuxtLink
-          v-for="item in scenarios"
-          :key="item.label"
-          :to="scenarioLink(item.value)"
-          class="scenarios__link"
-          :class="{ 'is-active': (route.query.simulate ?? undefined) === item.value }"
-        >
-          {{ item.label }}
-        </NuxtLink>
-      </nav>
     </section>
   </div>
 </template>

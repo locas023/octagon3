@@ -1,24 +1,12 @@
 import type { ApiRequestListItem, Paginated } from '#shared/types/api'
+import { requestPage } from '../../repositories/requests'
 
 /** GET /api/requests — список заявок с поиском, фильтрами, сортировкой и пагинацией. */
 export default defineEventHandler(async (event): Promise<Paginated<ApiRequestListItem>> => {
-  await requireUser(event)
+  const user = await requireUser(event)
   const mode = await applySimulation(event)
   const query = parseRequestListQuery(getQuery(event))
 
-  const source: ApiRequestListItem[] = mode === 'empty'
-    ? []
-    : (await visibleRequests(event)).map(({ comments: _c, timeline: _t, description: _d, ...item }) => item)
-
-  const filtered = filterAndSort(source, query)
-  const start = (query.page - 1) * query.pageSize
-
-  return {
-    items: filtered.slice(start, start + query.pageSize),
-    total: filtered.length,
-    page: query.page,
-    pageSize: query.pageSize,
-  }
+  if (mode === 'empty') return { items: [], total: 0, page: query.page, pageSize: query.pageSize }
+  return requestPage(user, query)
 })
-
-

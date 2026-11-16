@@ -19,9 +19,3 @@ test('login → create → assign → status → comment → logout', async ({pa
  await expect(page).toHaveURL(/login/)
  await page.goto('/requests'); await expect(page).toHaveURL(/login/)
 })
-
-
-
-
-
-

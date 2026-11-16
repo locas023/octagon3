@@ -3,10 +3,11 @@ export default defineNuxtConfig({
   runtimeConfig: { databaseUrl: process.env.DATABASE_URL, public: { siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'http://127.0.0.1:3006' } },
   compatibilityDate: '2025-07-15',
   modules: ['@pinia/nuxt'],
+  routeRules: { '/api/**': { headers: { 'Cache-Control': 'no-store' } }, '/_nuxt/**': { headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } } },
   devtools: { enabled: false },
   // На Windows «localhost» может резолвиться только в IPv6 (::1) — слушаем явный IPv4-адрес.
   devServer: { host: '127.0.0.1', port: 3006 },
-  css: ['~/assets/css/main.css','~/assets/css/knowledge.css'],
+  css: ['@fontsource-variable/montserrat','~/assets/css/main.css','~/assets/css/knowledge.css'],
   app: {
     head: {
       htmlAttrs: { lang: 'ru' },
@@ -19,12 +20,6 @@ export default defineNuxtConfig({
       ],
       link: [
         { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        {
-          rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap',
-        },
       ],
     },
   },
@@ -32,9 +27,3 @@ export default defineNuxtConfig({
     strict: true,
   },
 })
-
-
-
-
-
-

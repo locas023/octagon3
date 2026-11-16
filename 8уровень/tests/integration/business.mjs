@@ -20,5 +20,3 @@ assert.equal((await upload('bad.pdf','application/pdf','not a PDF')).status,415)
 for(let i=0;i<5;i++)assert.equal((await upload(`test${i}.pdf`,'application/pdf','%PDF-1.4\n%%EOF')).status,200)
 assert.equal((await upload('six.pdf','application/pdf','%PDF-1.4\n%%EOF')).status,422)
 console.log('PASS: admin permissions, SLA deadline, escalation reason, notifications, attachment signature/count')
-
-

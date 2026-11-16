@@ -46,7 +46,7 @@ export function toUiError(error: unknown): UiError {
     }
   }
 
-  if (status === 409) return { status, title: 'Конфликт', message: 'Заявка изменена или переход недопустим. Предыдущее значение восстановлено.', retryAfter: null }
+  if (status === 409) return { status, title: 'Конфликт', message: body?.message ?? body?.statusMessage ?? 'Данные изменены или переход недопустим. Обновите страницу.', retryAfter: null }
   if (status === 401) return { status, title: 'Требуется вход', message: 'Сессия истекла. Войдите снова.', retryAfter: null }
   if (status === 404) {
     return { status, title: 'Не найдено', message: 'Запрошенные данные не найдены.', retryAfter: null }
@@ -68,4 +68,3 @@ export function toUiError(error: unknown): UiError {
     retryAfter: null,
   }
 }
-

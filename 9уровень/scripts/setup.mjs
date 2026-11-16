@@ -8,9 +8,11 @@ const target=new URL(process.env.DATABASE_URL)
 const dbName=decodeURIComponent(target.pathname.slice(1))
 if(!/^[a-zA-Z_][a-zA-Z0-9_]*$/.test(dbName)) throw new Error('Используйте простое имя базы')
 const maintenance=new URL(target); maintenance.pathname='/postgres'
-const admin=postgres(maintenance.toString())
-if(!(await admin`SELECT 1 FROM pg_database WHERE datname=${dbName}`).length) await admin.unsafe(`CREATE DATABASE "${dbName}"`)
-await admin.end()
+if(process.env.CREATE_DATABASE!=='false'){
+ const admin=postgres(maintenance.toString())
+ if(!(await admin`SELECT 1 FROM pg_database WHERE datname=${dbName}`).length) await admin.unsafe(`CREATE DATABASE "${dbName}"`)
+ await admin.end()
+}
 const sql=postgres(process.env.DATABASE_URL)
 await sql.unsafe(await readFile(new URL('../database/001-initial.sql',import.meta.url),'utf8'))
 await sql.unsafe(await readFile(new URL('../database/002-business.sql',import.meta.url),'utf8'))
@@ -23,7 +25,6 @@ for(const role of ['admin','operator','agent','client']) {
 await sql`INSERT INTO customers(id,data) VALUES('client','{"id":"client","name":"Демо-компания"}') ON CONFLICT DO NOTHING`
 await sql`INSERT INTO categories(id,data) VALUES('it','{"id":"it","name":"IT-поддержка"}') ON CONFLICT DO NOTHING`
 await seedFixtures(sql,hash)
+await sql.unsafe(await readFile(new URL('../database/003-history-indexes.sql',import.meta.url),'utf8'))
 await sql.end()
 console.log('Схема и demo accounts созданы. Пароль демо: WorkflowDemo2026!')
-
-

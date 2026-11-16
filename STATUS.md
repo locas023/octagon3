@@ -1,38 +1,21 @@
 # Состояние WorkFlow
 
-Созданы отдельные самостоятельные папки 1уровень–9уровень. Порты 3002–3009 для уровней 2–9. Запуск в выбранной папке: `npm.cmd install`, для 4–9 `npm.cmd run db:setup`, затем `npm.cmd run dev`.
+Уровни 1–9 находятся в отдельных самостоятельных папках. Порт первого уровня — 3000, остальных — 3002–3009. Финальное Docker-приложение: http://127.0.0.1:3019.
 
-## Реализовано
+- 1: интерфейс и переиспользуемые компоненты по макету.
+- 2: типизированные GET API, URL-фильтры, debounce, пагинация, loading/error/retry/empty.
+- 3: Pinia-настройки, optimistic mutation, rollback, Undo, комментарии.
+- 4: PostgreSQL, seed, серверные сессии и четыре роли, CRUD справочников, профиль, валидация и переходы статусов.
+- 5: unit/Vitest, API integration, Playwright, Vue/TS/JS lint.
+- 6: SSR landing/FAQ/help/articles, metadata, sitemap/robots, 404, локальные шрифты. Performance before/after измерен на финальной версии, методика указана в docs.
+- 7: features и серверные сервисы, SQL pagination/filtering, проверка границ импортов, ARCHITECTURE и три ADR.
+- 8: SLA, эскалация с причиной, фоновый scan, уведомления read/unread, вложения, историческая аналитика периода.
+- 9: Docker Compose, CI workflow, release audit, доступность, performance, demo-сценарий и документация.
 
-- 2: типизированные GET endpoints, useFetch, URL-фильтры, debounce, pagination, 429/500/retry, fallback пустых полей.
-- 3: Pinia UI preferences, мутации API, optimistic priority с rollback, Undo, комментарии.
-- 4: PostgreSQL, seed, серверные сессии, четыре роли, проверка доступа, Zod, правила статусов. Создание заявки и выход доступны в шапке.
-- 5: unit status rules, API integration, Playwright основной пользовательский сценарий. В финальной папке также regression tests поиска/refresh/preferences.
-- 6: FAQ/help/articles SSR, поиск, metadata, canonical, Open Graph, sitemap/robots, 404 статьи.
-- 7: серверный сервис заявок; ARCHITECTURE.md и три ADR с компромиссами.
-- 8: настройки SLA, статус escalated с причиной, уведомления назначения/эскалации/SLA, вложения, аналитика.
-- 9: production build, Dockerfile/Compose, CI-конфигурация, demo script, audit, performance measurements, AI_USED.
+Подтверждено локально: typecheck 4–9, unit и lint 5–9; production Docker build. Финальные 10 браузерных сценариев прошли. API/business/admin-analytics прошли; тесты повторяемы. Public SSR/hydration и ширины 360/768/1280 проверены. Полные результаты доступности — `9уровень/docs/audit/accessibility.json`. Lighthouse mobile на трёх страницах: performance 100, LCP 0,76–0,91 с, CLS 0; это единичные локальные диагностические прогоны.
 
-## Проверено фактически
+Запуск в отдельном Compose-проекте с новой пустой базой прошёл: миграции, seed, API/business/admin-analytics и все 10 E2E. Проверены сохранность заявки и сессии после down/up и фоновое создание SLA-уведомления без запроса страницы. Видео записано: `9уровень/docs/demo/workflow-demo.webm`.
 
-Typecheck уровней 3–9: успешно. Unit и JS/MJS lint уровней 7 и 9: успешно. Production build уровней 3 и 9: успешно.
+Репозиторий: https://github.com/locas023/octagon3. Бесплатный deployment подготовлен через корневой render.yaml и внешнюю PostgreSQL Neon; облачные аккаунты и публичный URL пока не подключены. Фактическое состояние CI и tag проверяются в GitHub. Не считать наличие конфигурации подтверждением прошедшего внешнего CI/deploy.
 
-Финальная версия http://127.0.0.1:3009: API integration и business integration прошли. Playwright: 5 passed — уведомления read/unread с сохранением после refresh; регистрация с запретом повышения роли; основной workflow; восстановление URL и гонка поиска; сохранение плотности после refresh. Production публичные страницы проверены на 360/768/1280; нет overflow, hydration errors и JS errors. SSR h1/canonical и 404 проверены. Результаты: 9уровень/docs/performance-results.json.
-
-## Что пока не закрывает задания полностью
-
-- Docker Compose проверен фактическим запуском на http://127.0.0.1:3019: приложение и PostgreSQL healthy, API и браузерные сценарии прошли. Заявка и сессия сохраняются после down/up без удаления тома. CI не запускался на GitHub.
-- Нет внешнего demo deployment и записанного видео; есть локальный URL и сценарий.
-- Полный визуальный и keyboard/a11y аудит всех экранов и четырёх ролей не завершён. Есть отличие шрифтов при блокировке Google Fonts.
-- Нет сопоставимых измерений Web Vitals до/после; есть локальные размеры HTML/время ответа.
-- Уровень 9: ESLint теперь проверяет Vue/TS/JS, lint проходит; в прежних снимках сохраняется более простая конфигурация.
-- Архитектурный рефакторинг частичный: выделен сервис requests, но все домены ещё не разнесены по features. JSONB хранит значительную часть модели; фильтрация выполняется в памяти.
-- CRUD пользователей/категорий не полный; в финале есть активация пользователей, справочники и контроль назначения. Регистрация клиента добавлена в уровни 4–9; проверена API и браузерным тестом в финальной версии.
-- Аналитика ограничена текущими статусами, загрузкой и текущими deadline. Нет исторического SLA и среднего времени решения/фильтра периода.
-- Управление read/unread добавлено в уровни 8–9, состояние хранится в PostgreSQL. Фоновый планировщик SLA ещё не реализован: уведомления SLA создаются при запросе.
-
-Это работающий кандидат для проверки, а не утверждение о полном выполнении каждого пункта всех txt.
-
-
-Docker runtime запускается uid 1000, без TypeScript/ESLint/Playwright. Zod в уровнях 4–9 обновлена до исправленной ветки 4.6.7+. Production npm audit финального уровня: 0 high/critical, 6 low и 6 moderate (см. отчёт).
-
+Ограничения: нет полевых INP и нагрузочного тестирования, полного ручного screen reader аудита и pixel-perfect проверки каждого состояния Figma. Планировщик зависит от работающего процесса. В npm audit остаются low/moderate зависимости; high/critical нет. Подробности — `9уровень/docs/TRADEOFFS.md`.

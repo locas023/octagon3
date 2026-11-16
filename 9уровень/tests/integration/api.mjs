@@ -10,8 +10,8 @@ const path=`/api/requests/${created.data.id}`
 const key=crypto.randomUUID()
 await Promise.all([request(path+'/comments',json({text:'one',key},cookie)),request(path+'/comments',json({text:'one',key},cookie))])
 const detail=await request(path,{headers:{cookie}});assert.equal(detail.data.comments.filter(c=>c.id===key).length,1)
+const updated=await request(path,{...json({priority:'high'},cookie),method:'PATCH'});assert.equal(updated.status,200);assert.equal(updated.data.comments.filter(c=>c.id===key).length,1)
 const invalid=await request(path,{...json({status:'closed'},cookie),method:'PATCH'});assert.equal(invalid.status,409)
 const client=await request('/api/auth/login',json({email:'client@workflow.demo',password:'WorkflowDemo2026!'}));assert.equal((await request(path,{headers:{cookie:client.cookie}})).status,404)
 await request('/api/auth/logout',json({},cookie));assert.equal((await request(path,{headers:{cookie}})).status,401)
 console.log('PASS: auth, create, duplicate comment, transition, ownership, logout')
-

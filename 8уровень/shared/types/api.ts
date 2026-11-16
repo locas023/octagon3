@@ -21,11 +21,13 @@ export interface ApiUser {
 export interface ApiCustomer {
   id: string
   name: string
+  active?: boolean
 }
 
 export interface ApiCategory {
   id: string
   name: string
+  active?: boolean
 }
 
 export interface ApiComment {
@@ -44,6 +46,7 @@ export interface ApiTimelineEvent {
   /** Новое значение (статус, приоритет, id исполнителя) — зависит от type */
   value?: string | null
   createdAt: string
+  reason?: string
 }
 
 /** Элемент списка заявок */
@@ -106,4 +109,3 @@ export interface ApiErrorBody {
   message?: string
   data?: { retryAfter?: number }
 }
-
