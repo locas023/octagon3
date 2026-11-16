@@ -37,7 +37,7 @@ export interface ApiComment {
   createdAt: string
 }
 
-export type ApiTimelineEventType = 'created' | 'assigned' | 'status' | 'priority' | 'comment'
+export type ApiTimelineEventType = 'created' | 'assigned' | 'status' | 'priority' | 'comment' | 'archived' | 'restored' | 'rated'
 
 export interface ApiTimelineEvent {
   id: string
@@ -60,13 +60,17 @@ export interface ApiRequestListItem {
   priority: RequestPriority
   createdAt: string
   dueAt?: string | null
+  archivedAt?: string | null
 }
+
+export interface ApiRating { score: number; createdAt: string }
 
 /** Полная заявка */
 export interface ApiRequest extends ApiRequestListItem {
   description?: string | null
   comments: ApiComment[]
   timeline: ApiTimelineEvent[]
+  rating?: ApiRating | null
 }
 
 export interface Paginated<T> {
@@ -89,6 +93,7 @@ export type SortOption = 'newest' | 'oldest' | 'priority'
 
 /** Параметры GET /api/requests */
 export interface RequestListQuery {
+  archive?: 'active' | 'archived'
   q?: string
   status?: RequestStatus
   priority?: RequestPriority

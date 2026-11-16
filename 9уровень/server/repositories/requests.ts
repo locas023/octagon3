@@ -5,9 +5,10 @@ import type { parseRequestListQuery } from '../utils/request-query'
 /** All predicates, ordering and pagination are applied by PostgreSQL. */
 export async function requestPage(user: ApiUser, query: ReturnType<typeof parseRequestListQuery>): Promise<Paginated<ApiRequestListItem>> {
   const sql = database()
+  if (query.archive === 'archived' && user.role !== 'admin') throw createError({ statusCode: 403, message: 'Архив доступен администратору' })
   const access = user.role === 'client' ? sql`data->>'customerId'=${user.id}` : user.role === 'agent' ? sql`data->>'assigneeId'=${user.id}` : sql`true`
   const needle = query.q.replace(/^#/, '').toLowerCase()
-  const where = sql`${access}
+  const where = sql`${access} AND (${query.archive === 'archived'} = (archived_at IS NOT NULL))
     AND (${!query.status} OR data->>'status'=${query.status || ''})
     AND (${!query.priority} OR data->>'priority'=${query.priority || ''})
     AND (${query.assignment === 'all'} OR (${query.assignment === 'assigned'} AND NULLIF(data->>'assigneeId','') IS NOT NULL) OR (${query.assignment === 'unassigned'} AND NULLIF(data->>'assigneeId','') IS NULL))

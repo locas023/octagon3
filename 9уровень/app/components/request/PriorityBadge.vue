@@ -1,19 +1,13 @@
 <script setup lang="ts">
-import type { IconName, RequestPriority } from '~/types'
+import type { RequestPriority } from '~/types'
 
 defineProps<{ priority: RequestPriority }>()
 
-const icons: Record<RequestPriority, IconName> = {
-  critical: 'alert-triangle',
-  high: 'chevrons-up',
-  normal: 'equals',
-  low: 'chevron-down',
-}
 </script>
 
 <template>
   <span class="priority" :class="`priority--${priority}`">
-    <AppIcon :name="icons[priority]" :size="14" />
+    <img :src="`/design/priority-${priority}.svg`" alt="" aria-hidden="true" class="priority__icon">
     {{ PRIORITY_LABELS[priority] }}
   </span>
 </template>
@@ -43,4 +37,5 @@ const icons: Record<RequestPriority, IconName> = {
 .priority--low {
   color: var(--c-text-faint);
 }
+.priority__icon{display:block;flex:none}
 </style>

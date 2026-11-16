@@ -6,16 +6,17 @@ export async function visibleRequests(event: H3Event) {
   const user=await requireUser(event)
   const sql=database()
   const access=user.role==='client'?sql`data->>'customerId'=${user.id}`:user.role==='agent'?sql`data->>'assigneeId'=${user.id}`:sql`true`
-  const rows=await sql`SELECT data FROM requests WHERE ${access} ORDER BY id DESC`
+  const rows=await sql`SELECT data FROM requests WHERE ${access} AND archived_at IS NULL ORDER BY id DESC`
   return rows.map(row=>row.data as ApiRequest)
 }
 export async function findRequest(event: H3Event) {
   const user=await requireUser(event)
-  const rows=await database()`SELECT data FROM requests WHERE id=${Number(getRouterParam(event,'id')) || -1}`
+  const rows=await database()`SELECT data,archived_at FROM requests WHERE id=${Number(getRouterParam(event,'id')) || -1}`
   const item=rows[0]?.data as ApiRequest | undefined
-  if(!item || !canRead(user,item)) throw createError({statusCode:404,statusMessage:'Заявка не найдена'})
+  if(!item || !canRead(user,item) || (rows[0]?.archived_at && user.role!=='admin')) throw createError({statusCode:404,statusMessage:'Заявка не найдена'})
   const comments=await database()`SELECT data FROM comments WHERE request_id=${item.id} ORDER BY data->>'createdAt'`
-  return { ...item, comments:comments.map(c=>c.data) } as ApiRequest
+  const ratings=await database()`SELECT score,created_at FROM request_ratings WHERE request_id=${item.id}`
+  return { ...item, archivedAt:rows[0]?.archived_at?.toISOString()||null, rating:ratings[0]?{score:ratings[0].score,createdAt:ratings[0].created_at.toISOString()}:null, comments:comments.map(c=>c.data) } as ApiRequest
 }
 export async function patchRequest(event: H3Event) {
   const user=await requireUser(event)
@@ -23,9 +24,11 @@ export async function patchRequest(event: H3Event) {
   if(!input.success) throw createError({statusCode:422,statusMessage:'Проверьте параметры заявки'})
   const body=input.data
   return database().begin(async sql=> {
-    const rows=await sql`SELECT data FROM requests WHERE id=${Number(getRouterParam(event,'id')) || -1} FOR UPDATE`
+    const rows=await sql`SELECT data,archived_at FROM requests WHERE id=${Number(getRouterParam(event,'id')) || -1} FOR UPDATE`
     const item=rows[0]?.data as ApiRequest | undefined
     if(!item || !canRead(user,item)) throw createError({statusCode:404})
+    if(rows[0]?.archived_at) throw createError({statusCode:user.role==='admin'?409:404,message:'Архивная заявка доступна только для чтения'})
+    if(item.status==='closed' && (body.priority || body.assigneeId!==undefined || (body.status && body.status!=='closed'))) throw createError({statusCode:409,message:'Закрытая заявка доступна только для чтения'})
     if(user.role==='client' && (body.priority || body.assigneeId!==undefined || body.status!=='closed')) throw createError({statusCode:403})
     if(user.role==='agent' && (body.assigneeId!==undefined || body.priority)) throw createError({statusCode:403})
     if(body.status && !allowedTransition(user.role,item.status,body.status)) throw createError({statusCode:409,statusMessage:'Недопустимый переход статуса'})
@@ -50,7 +53,8 @@ export async function patchRequest(event: H3Event) {
     if(body.priority) item.priority=body.priority
     if(body.status) item.status=body.status
     if(body.assigneeId!==undefined) item.assigneeId=body.assigneeId
-    await sql`UPDATE requests SET data=${sql.json({ ...item, comments:item.comments.map(c=>({...c})), timeline:item.timeline.map(e=>({...e})) })}, version=version+1 WHERE id=${item.id}`
+    const {rating:_rating,archivedAt:_archivedAt,...record}=item
+    await sql`UPDATE requests SET data=${sql.json({ ...record, comments:item.comments.map(c=>({...c})), timeline:item.timeline.map(e=>({...e})) })}, version=version+1 WHERE id=${item.id}`
     const comments=await sql`SELECT data FROM comments WHERE request_id=${item.id} ORDER BY data->>'createdAt'`
     return {...item,comments:comments.map(row=>row.data as ApiComment)}
   })

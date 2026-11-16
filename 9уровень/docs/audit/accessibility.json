@@ -67,7 +67,7 @@
   },
   {
     "role": "client",
-    "path": "/requests/1042",
+    "path": "/requests/1099",
     "overflow": [],
     "violations": []
   },
@@ -103,7 +103,7 @@
   },
   {
     "role": "operator",
-    "path": "/requests/1070",
+    "path": "/requests/1103",
     "overflow": [],
     "violations": []
   },
@@ -139,7 +139,7 @@
   },
   {
     "role": "agent",
-    "path": "/requests/1071",
+    "path": "/requests/1104",
     "overflow": [],
     "violations": []
   },
@@ -169,7 +169,7 @@
   },
   {
     "role": "admin",
-    "path": "/requests/1071",
+    "path": "/requests/1104",
     "overflow": [],
     "violations": []
   },
@@ -206,6 +206,12 @@
   {
     "role": "admin",
     "path": "/admin/analytics",
+    "overflow": [],
+    "violations": []
+  },
+  {
+    "role": "admin",
+    "path": "/requests?archive=archived",
     "overflow": [],
     "violations": []
   }

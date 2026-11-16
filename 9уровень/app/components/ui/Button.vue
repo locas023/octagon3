@@ -51,17 +51,18 @@ const classes = computed(() => [
 
 <style scoped>
 .btn {
-  --btn-h: var(--control-h);
+  line-height:20px;
+  --btn-h: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   min-height: var(--btn-h);
-  padding: 0 18px;
+  padding: 0 16px;
   border: 1px solid transparent;
   border-radius: var(--radius);
-  font-size: var(--fs-sm);
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
   line-height: 1;
   white-space: nowrap;
   text-decoration: none;
@@ -102,7 +103,7 @@ const classes = computed(() => [
 .btn--primary {
   background: var(--gradient-accent);
   color: #fff;
-  box-shadow: 0 6px 18px rgba(122, 92, 255, 0.28);
+  box-shadow: none;
 }
 
 .btn--primary:hover:not(:disabled) {

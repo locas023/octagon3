@@ -32,7 +32,7 @@ export function useRequestFilters() {
     const next: RequestFilters = { ...filters.value, ...patch }
     // Любое изменение фильтров, кроме перелистывания, возвращает на первую страницу
     if (!('page' in patch)) next.page = 1
-    const keep = route.query.simulate ? { simulate: route.query.simulate } : {}
+    const keep = { ...(route.query.simulate ? { simulate: route.query.simulate } : {}), ...(route.query.archive === 'archived' ? { archive: 'archived' } : {}) }
     return router.replace({ query: { ...serializeFilters(next), ...keep } })
   }
 
@@ -48,9 +48,10 @@ export function useRequests(options: { pageSize?: number } = {}) {
   const pageSize = options.pageSize ?? DEFAULT_PAGE_SIZE
   const { filters } = useRequestFilters()
   const simulate = useSimulateMode()
+  const route = useRoute()
   const reference = useReferenceData()
 
-  const query = computed(() => ({ ...toApiQuery(filters.value, pageSize), simulate: simulate.value }))
+  const query = computed(() => ({ ...toApiQuery(filters.value, pageSize), archive: route.query.archive==='archived'?'archived':'active', simulate: simulate.value }))
 
   const request = useFetch<Paginated<ApiRequestListItem>>('/api/requests', {
     key: 'requests-list',

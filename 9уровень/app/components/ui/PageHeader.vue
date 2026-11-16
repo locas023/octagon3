@@ -25,18 +25,19 @@ withDefaults(defineProps<{ title: string; subtitle?: string }>(), { subtitle: un
 }
 
 .page-header__title {
-  font-size: var(--fs-xl);
+  font-size: 28px; line-height: 36px;
 }
 
 .page-header__subtitle {
-  margin-top: 8px;
-  font-size: var(--fs-sm);
+  line-height:20px;
+  margin-top: 24px;
+  font-size: 14px;
   color: var(--c-text-muted);
 }
 
 @media (min-width: 768px) {
   .page-header__title {
-    font-size: var(--fs-2xl);
+    font-size: 28px;
   }
 }
 </style>

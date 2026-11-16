@@ -6,21 +6,21 @@
   color-scheme: dark;
 
   /* Цвета */
-  --c-bg: #17143a;
+  --c-bg: #17153a;
   --c-bg-deep: #120f30;
-  --c-surface: #221d50;
+  --c-surface: #23204d;
   --c-surface-2: #2a2461;
-  --c-surface-3: #332c72;
-  --c-border: rgba(150, 138, 255, 0.18);
-  --c-border-strong: rgba(160, 148, 255, 0.36);
+  --c-surface-3: #2f2a6a;
+  --c-border: #413e74;
+  --c-border-strong: #615b94;
 
-  --c-text: #f3f2ff;
-  --c-text-muted: #a6a2cf;
-  --c-text-faint: #aaa6d0;
+  --c-text: #e8e7ec;
+  --c-text-muted: #b9b3d4;
+  --c-text-faint: #b9b3d4;
 
   --c-accent: #7a5cff;
   --c-accent-2: #c84bc4;
-  --c-cyan: #5ad1e6;
+  --c-cyan: #79cee8;
   --c-focus: #9d8cff;
 
   --c-success: #3ed6a0;
@@ -28,16 +28,15 @@
   --c-danger: #ff5d8f;
   --c-info: #6fa8ff;
 
-  --gradient-accent: linear-gradient(90deg, #6a5cff 0%, #c84bc4 100%);
+  --gradient-accent: linear-gradient(90deg, #635bff 0%, #c548ab 100%);
   --gradient-accent-hover: linear-gradient(90deg, #7d70ff 0%, #d862d2 100%);
-  --gradient-page: radial-gradient(1200px 700px at 15% -10%, #2a2366 0%, transparent 60%),
-    radial-gradient(900px 600px at 100% 0%, #221c58 0%, transparent 55%), var(--c-bg);
+  --gradient-page: radial-gradient(ellipse at 54.5% 50%, #201d47 0%, #17153a 100%);
 
   /* Типографика */
   --font: 'Montserrat Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --fs-xs: 0.75rem;
   --fs-sm: 0.8125rem;
-  --fs-md: 0.9375rem;
+  --fs-md: 0.875rem;
   --fs-lg: 1.125rem;
   --fs-xl: 1.5rem;
   --fs-2xl: 2rem;
@@ -45,12 +44,12 @@
 
   /* Размеры */
   --radius-sm: 6px;
-  --radius: 8px;
-  --radius-lg: 12px;
+  --radius: 4px;
+  --radius-lg: 4px;
   --control-h: 40px;
-  --container: 1120px;
+  --container: 1152px;
   --gutter: 16px;
-  --header-h: 64px;
+  --header-h: 80px;
 
   --shadow: 0 10px 30px rgba(6, 4, 30, 0.35);
   --transition: 160ms ease;
@@ -64,7 +63,7 @@
 
 @media (min-width: 1280px) {
   :root {
-    --gutter: 80px;
+    --gutter: 64px;
   }
 }
 
@@ -226,12 +225,12 @@ ol {
 }
 
 .page {
-  padding-block: 32px 64px;
+  padding-block: 24px 64px;
 }
 
 @media (min-width: 768px) {
   .page {
-    padding-block: 48px 80px;
+    padding-block: 24px 80px;
   }
 }
 

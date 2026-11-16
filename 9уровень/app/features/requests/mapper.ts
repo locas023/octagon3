@@ -76,6 +76,9 @@ export function toCommentView(comment: ApiComment, lookups: Lookups): CommentVie
 
 function describeEvent(event: ApiTimelineEvent, lookups: Lookups): string {
   switch (event.type) {
+    case 'archived': return 'переместил(а) заявку в архив'
+    case 'restored': return 'восстановил(а) заявку из архива'
+    case 'rated': return `оценил(а) решение: ${event.value} из 5`
     case 'created':
       return 'создал(а) заявку'
     case 'assigned': {
@@ -106,6 +109,9 @@ export function toTimelineEventView(event: ApiTimelineEvent, lookups: Lookups): 
 export function toRequestView(request: ApiRequest, lookups: Lookups): RequestView {
   return {
     ...toRequestListItemView(request, lookups),
+    archivedAt: request.archivedAt || null,
+    rating: request.rating || null,
+    resolution: (request.timeline || []).find(event => event.type === 'status' && event.value === 'resolved')?.reason?.trim() || null,
     description: request.description?.trim() || null,
     comments: (request.comments ?? []).map((comment) => toCommentView(comment, lookups)),
     timeline: (request.timeline ?? []).map((event) => toTimelineEventView(event, lookups)),

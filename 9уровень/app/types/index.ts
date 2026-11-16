@@ -25,7 +25,7 @@ export interface CommentView {
   createdAt: string
 }
 
-export type TimelineEventType = 'created' | 'assigned' | 'status' | 'priority' | 'comment'
+export type TimelineEventType = 'created' | 'assigned' | 'status' | 'priority' | 'comment' | 'archived' | 'restored' | 'rated'
 
 export interface TimelineEventView {
   id: string
@@ -50,6 +50,9 @@ export interface RequestListItemView {
 }
 
 export interface RequestView extends RequestListItemView {
+  resolution?: string | null
+  archivedAt?: string | null
+  rating?: { score: number; createdAt: string } | null
   description: string | null
   comments: CommentView[]
   timeline: TimelineEventView[]

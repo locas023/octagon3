@@ -6,7 +6,7 @@
 <script setup lang="ts">
 useHead({ title: 'Заявки' })
 const actor=useCurrentUser()
-const heading=computed(()=>actor.value.role==='client'?'Мои заявки':actor.value.role==='agent'?'Назначенные мне заявки':'Рабочий день под контролем')
+const heading=computed(()=>actor.value.role==='admin'?(route.query.archive==='archived'?'Архивные заявки':'Все заявки'):actor.value.role==='client'?'Мои заявки':actor.value.role==='agent'?'Назначенные мне заявки':'Рабочий день под контролем')
 
 const route = useRoute()
 const router = useRouter()
@@ -41,12 +41,13 @@ async function retry() {
   <div class="page container">
     <UiPageHeader :title="heading" subtitle="Заявки, которые требуют вашего внимания" />
 
-    <DashboardStatsGrid />
+    <RequestArchiveTabs v-if="actor.role==='admin'" :archive="route.query.archive==='archived'"/>
+    <DashboardStatsGrid v-if="actor.role==='operator'" />
 
     <section aria-labelledby="requests-title">
       <div class="requests__head">
         <h2 id="requests-title" class="requests__title">Заявки</h2>
-        <UiButton v-if="actor.role!=='agent'" to="/new-request">
+        <UiButton v-if="actor.role!=='agent' && actor.role!=='admin'" to="/new-request">
           <AppIcon name="plus" :size="16" />
           Создать заявку
         </UiButton>
@@ -69,8 +70,8 @@ async function retry() {
 
       <UiStateBlock
         v-else-if="total === 0"
-        title="Заявок пока нет"
-        description="Обращения появятся здесь после создания."
+        :title="route.query.archive==='archived'?'Архив пока пуст':'Заявок пока нет'"
+        :description="route.query.archive==='archived'?'Архивированные закрытые заявки появятся здесь.':'Обращения появятся здесь после создания.'"
       />
 
       <template v-else>

@@ -59,14 +59,16 @@ withDefaults(
 }
 
 .table {
+  font-weight:500;
   width: 100%;
   border-collapse: collapse;
   table-layout: auto;
-  font-size: var(--fs-sm);
+  font-size: 12px;
 }
 
 th {
-  padding: 12px 16px;
+  line-height:16px;
+  padding: 16px;
   background: var(--c-surface-3);
   font-size: var(--fs-xs);
   font-weight: 600;
@@ -76,8 +78,8 @@ th {
 }
 
 td {
-  padding: 14px 16px;
-  border-top: 1px solid var(--c-border);
+  padding: 15px 16px;
+  height:54px;
   vertical-align: middle;
 }
 
@@ -105,6 +107,8 @@ tbody tr:focus-within {
 
 /* Длинные названия: не больше двух строк, полный текст — в title */
 .table__link {
+  font-size:14px;
+  line-height:20px;
   display: -webkit-box;
   overflow: hidden;
   -webkit-line-clamp: 2;
@@ -151,6 +155,16 @@ tbody tr:has(.table__link:focus-visible) {
 }
 
 @media (min-width: 1024px) {
+  .table{table-layout:fixed}
+  th,td{padding-inline:6px}
+  th:first-child,td:first-child{padding-left:16px}
+  th:last-child,td:last-child{padding-right:16px}
+  th:first-child{width:84px}
+  th:nth-child(3){width:152px}
+  th:nth-child(4){width:122px}
+  th:nth-child(5){width:132px}
+  th:last-child{width:152px}
+  .table__link{-webkit-line-clamp:1}
   .col-wide {
     display: table-cell;
   }

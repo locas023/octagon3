@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { ApiRequest, RequestPriority, RequestStatus } from '#shared/types/api'
 import { allowedTransition } from '#shared/utils/transitions'
-import { postComment } from '~/features/comments/data'
 const props = defineProps<{ id: number }>()
 const { data } = useNuxtData<ApiRequest>(`request-${props.id}`)
 const { users } = useReferenceData()
-const pending = ref(false), message = ref(''), comment = ref('')
+const pending = ref(false), message = ref('')
 const reason=ref('')
 const actor=useCurrentUser()
 const editable=computed(()=>actor.value.role==='operator'||actor.value.role==='admin')
@@ -25,13 +24,6 @@ async function change(patch: { priority?: RequestPriority; status?: RequestStatu
   } catch (error) { data.value = previous; message.value = toUiError(error).message || 'Не удалось сохранить. Предыдущее значение восстановлено.' }
   finally { pending.value = false }
 }
-async function send() {
-  if (pending.value || !comment.value.trim()) return
-  pending.value = true
-  try { await postComment(props.id,comment.value,crypto.randomUUID()); comment.value = ''; await refreshNuxtData(`request-${props.id}`); message.value = 'Комментарий отправлен' }
-  catch { message.value = 'Комментарий не отправлен. Текст сохранён — попробуйте ещё раз.' }
-  finally { pending.value = false }
-}
 </script>
 <template>
   <section v-if="data" class="panel actions">
@@ -40,7 +32,6 @@ async function send() {
     <label>Статус<select :value="data.status" :disabled="pending" @change="change({ status: ($event.target as HTMLSelectElement).value as RequestStatus })"><option v-for="[key,meta] in statusOptions" :key="key" :value="key">{{ meta }}</option></select></label>
     <label>Исполнитель<select :value="data.assigneeId || ''" :disabled="pending || !editable" @change="change({ assigneeId: ($event.target as HTMLSelectElement).value || null })"><option value="">Не назначен</option><option v-for="user in users.filter(u => u.role === 'agent')" :key="user.id" :disabled="!user.active" :value="user.id">{{ user.name }}</option></select></label>
     <button v-if="undo" :disabled="pending" @click="change(undo!, true)">Отменить последнее изменение (Undo)</button>
-    <form @submit.prevent="send"><label>Комментарий<textarea v-model="comment" maxlength="5000" :disabled="pending" required /></label><UiButton type="submit" :disabled="pending || !comment.trim()">Отправить</UiButton></form>
     <p role="status" aria-label="Сохранение заявки">{{ message }}</p>
 
   </section>

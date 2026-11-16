@@ -22,7 +22,7 @@ const { stats } = useRequestStats()
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
 }
 
 .stats__placeholder {

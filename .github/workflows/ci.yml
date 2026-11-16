@@ -34,6 +34,7 @@ jobs:
           npm run test:integration
           node tests/integration/business.mjs
           node tests/integration/admin-analytics.mjs
+          node tests/integration/lifecycle.mjs
           npm run test:e2e
           node tests/public-check.mjs
       - uses: actions/upload-artifact@v4

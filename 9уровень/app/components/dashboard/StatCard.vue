@@ -14,8 +14,8 @@ defineProps<{ label: string; value: number; hint: string }>()
 .stat {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 16px;
+  gap: 16px;
+  padding: 24px;
   transition: border-color var(--transition);
 }
 
@@ -24,6 +24,7 @@ defineProps<{ label: string; value: number; hint: string }>()
 }
 
 .stat__label {
+  line-height:16px;
   font-size: var(--fs-xs);
   font-weight: 500;
   color: var(--c-text-muted);
@@ -32,17 +33,19 @@ defineProps<{ label: string; value: number; hint: string }>()
 .stat__value {
   font-size: var(--fs-2xl);
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 40px;
 }
 
 .stat__hint {
+  line-height:16px;
+  font-weight:500;
   font-size: var(--fs-xs);
   color: var(--c-text-faint);
 }
 
 @media (min-width: 768px) {
   .stat {
-    padding: 20px;
+    padding: 24px;
   }
 }
 </style>

@@ -4,6 +4,7 @@ const route = useRoute()
 const router = useRouter()
 
 const id = computed(() => Number(route.params.id))
+const actor = useCurrentUser()
 const { request, error, notFound, loading, refresh } = useRequest(id)
 
 // Несуществующая заявка — полноценная страница 404
@@ -50,6 +51,8 @@ async function retry() {
           <RequestStatusBadge :status="request.status" />
           <RequestPriorityBadge :priority="request.priority" />
         </div>
+        <p v-if="request.archivedAt" class="archive-notice panel" role="status">Заявка в архиве. Доступно только чтение.</p>
+        <RequestArchiveActions v-if="actor.role==='admin' && request.status==='closed'" :id="request.id" :archived="!!request.archivedAt"/>
       </header>
 
       <div class="request-layout">
@@ -59,20 +62,24 @@ async function retry() {
             <p class="block__text">{{ request.description ?? 'Описание не заполнено.' }}</p>
           </section>
 
+          <section v-if="request.resolution" class="block panel" aria-labelledby="resolution-title"><h2 id="resolution-title" class="block__title">Результат решения</h2><p class="block__text">{{request.resolution}}</p></section>
+          <RequestRating v-if="request.rating || (actor.role==='client' && request.status==='closed' && !request.archivedAt)" :id="request.id" :rating="request.rating" @saved="refresh"/>
+
           <section class="block panel" aria-labelledby="comments-title">
             <h2 id="comments-title" class="block__title">Комментарии · {{ request.comments.length }}</h2>
             <RequestComments :comments="request.comments" />
+            <RequestCommentForm v-if="!request.archivedAt" :id="request.id"/>
           </section>
 
-          <RequestAttachments :id="request.id"/>
           <section class="block panel" aria-labelledby="history-title">
             <h2 id="history-title" class="block__title">История заявки</h2>
             <RequestTimeline :events="request.timeline" />
           </section>
+          <RequestAttachments :id="request.id" :read-only="!!request.archivedAt"/>
         </div>
 
         <aside class="request-layout__side" aria-label="Параметры заявки">
-          <RequestParams :request="request" /><RequestActions :id="request.id" />
+          <RequestParams :request="request" /><RequestActions v-if="request.status!=='closed' && !request.archivedAt" :id="request.id" />
         </aside>
       </div>
     </template>
@@ -130,12 +137,13 @@ async function retry() {
 }
 
 .block {
-  padding: 20px;
+  padding: 24px;
 }
 
 .block__title {
   margin-bottom: 12px;
-  font-size: var(--fs-lg);
+  font-size: 20px;
+  line-height: 28px;
 }
 
 .block__text {
@@ -146,13 +154,14 @@ async function retry() {
 
 @media (min-width: 768px) {
   .request-head__title {
-    font-size: var(--fs-2xl);
+    font-size: 28px;
   }
 }
 
 @media (min-width: 1024px) {
   .request-layout {
     grid-template-columns: minmax(0, 1fr) 320px;
+    gap:24px;
     align-items: start;
   }
 
@@ -161,4 +170,5 @@ async function retry() {
     top: calc(var(--header-h) + 16px);
   }
 }
+.archive-notice{padding:24px;margin-top:24px}
 </style>

@@ -19,7 +19,11 @@ try{
    const list=await context.request.get(base+'/api/requests?pageSize=1').then(r=>r.json())
    if(list.items[0])paths.push(`/requests/${list.items[0].id}`)
    if(role!=='agent')paths.push('/new-request')
-   if(role==='admin')paths.push('/admin/users','/admin/customers','/admin/categories','/admin/sla','/admin/analytics')
+   if(role==='admin')paths.push('/admin/users','/admin/customers','/admin/categories','/admin/sla','/admin/analytics','/requests?archive=archived')
+   if(role==='client'){
+    const closed=await context.request.get(base+'/api/requests?status=closed&pageSize=1').then(r=>r.json())
+    if(closed.items[0]&&!paths.includes(`/requests/${closed.items[0].id}`))paths.push(`/requests/${closed.items[0].id}`)
+   }
   }
   for(const path of paths){
    let violations=[]
@@ -35,7 +39,8 @@ try{
      violations=audit.violations.map(v=>({id:v.id,impact:v.impact,description:v.description,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))}))
     }
     if(width!==768){
-     const name=`${role}-${path.replaceAll('/','_')||'home'}-${width}.png`
+     const safe=path.replace(/\/requests\/\d+/,'/requests/detail').replace(/[^a-zA-Z0-9_-]/g,'_')
+     const name=`${role}-${safe||'home'}-${width}.png`
      await page.screenshot({path:`docs/audit/screenshots/${name}`,fullPage:true})
     }
    }

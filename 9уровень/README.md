@@ -36,6 +36,7 @@ Dev URL: [127.0.0.1:3009](http://127.0.0.1:3009). `db:setup` по умолчан
 - Optimistic priority, rollback при ошибках, Undo, идемпотентные комментарии.
 - Серверные сессии, права четырёх ролей, профиль, CRUD пользователей/клиентов/категорий.
 - История статусов и причин, сроки SLA, эскалация, уведомления read/unread, вложения с проверкой содержимого.
+- Архив и восстановление закрытых заявок администратором; однократная оценка решения клиентом, история и защита архивных данных от изменений.
 - Аналитика периода: статусы, исторический SLA, среднее время решения и текущая загрузка.
 - SSR landing, FAQ, помощь и статьи с metadata, canonical, sitemap, robots и корректными 404.
 
@@ -56,20 +57,21 @@ $env:TEST_URL='http://127.0.0.1:3019'
 npm.cmd run test:integration
 npm.cmd run test:business
 node tests/integration/admin-analytics.mjs
+node tests/integration/lifecycle.mjs
 npm.cmd run test:e2e
 node tests/public-check.mjs
 node tests/accessibility.mjs
 ```
 
-Для E2E нужен Edge (`npx.cmd playwright install msedge`), для видео также `npx.cmd playwright install ffmpeg`. Тесты создают учебные записи. Проверка сохранности Docker-тома: `npm.cmd run test:docker`; она перезапускает контейнеры. Браузерных сценариев — 11; проверка доступности охватывает 35 сочетаний роли и маршрута, ширины 360/768/1280.
+Для E2E нужен Edge (`npx.cmd playwright install msedge`), для видео также `npx.cmd playwright install ffmpeg`. Тесты создают учебные записи. Проверка сохранности Docker-тома: `npm.cmd run test:docker`; она перезапускает контейнеры. Браузерных сценариев — 12; проверка доступности охватывает 36 сочетаний роли и маршрута, ширины 360/768/1280.
 
-[GitHub Actions](https://github.com/locas023/octagon3/actions) проверяет финальный снимок с PostgreSQL на чистом runner. [Release audit](docs/RELEASE-AUDIT.md) отделяет выполненные проверки от ограничений.
+[GitHub Actions](https://github.com/locas023/octagon3/actions) проверяет финальный снимок с PostgreSQL на чистом runner. [Release audit](docs/RELEASE-AUDIT.md) отделяет выполненные проверки от ограничений. Отдельные отчёты: [NVDA и доступность](docs/ACCESSIBILITY.md), [сверка Figma](docs/VISUAL-CHECKS.md).
 
 ## Performance и изображения
 
-Диагностический Lighthouse mobile: LCP публичных страниц после оптимизации 0,76–0,91 с, CLS 0, performance 100. По одному локальному прогону; это не полевые метрики. Методика, baseline и сырые отчёты: [PERFORMANCE](docs/PERFORMANCE.md).
+Диагностический Lighthouse mobile: LCP публичных страниц после оптимизации 0,76–0,92 с, CLS 0, performance 99–100. По одному локальному прогону; это не полевые метрики. Методика, baseline и сырые отчёты: [PERFORMANCE](docs/PERFORMANCE.md).
 
-![Главная](docs/audit/screenshots/public-_-1280.png)
-![Аналитика администратора](docs/audit/screenshots/admin-_admin_analytics-1280.png)
+![Главная](docs/screenshots/home.png)
+![Аналитика администратора](docs/screenshots/analytics.png)
 
-[Все снимки](docs/audit/screenshots), [видео](docs/demo/workflow-demo.webm), [сценарий демонстрации на 5 минут](docs/DEMO.md).
+[Контрольные снимки](docs/screenshots), [видео](docs/demo/workflow-demo.webm), [сценарий демонстрации на 5 минут](docs/DEMO.md).

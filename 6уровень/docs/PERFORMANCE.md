@@ -1,6 +1,6 @@
 # Performance
 
-Lighthouse 13.6, Edge headless, default mobile simulated throttling, production Docker на localhost. Один диагностический прогон на страницу до и после; скорость внешней сети и машины влияет на результат. Сырые JSON и время замеров: `performance/before` и `performance/after`.
+Lighthouse 13.6, Edge headless, default mobile simulated throttling, production Docker на localhost. Один диагностический прогон на страницу до и после; скорость внешней сети и машины влияет на результат. Сводки и время замеров находятся в `performance/before/summary.json` и `performance/after/summary.json`. Полные исходные отчёты измеренной финальной сборки: [9уровень/docs/performance](../../9уровень/docs/performance).
 
 | Страница | Performance до → после | LCP до → после, мс | CLS после | TBT после, мс | Transfer до → после, байт |
 | --- | --- | --- | --- | --- | --- |

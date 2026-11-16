@@ -6,7 +6,7 @@ defineProps<{ status: RequestStatus }>()
 
 <template>
   <span class="badge" :class="`badge--${status}`">
-    <span class="badge__dot" aria-hidden="true" />
+    <img v-if="status!=='escalated'" :src="`/design/status-${status}.svg`" alt="" aria-hidden="true" class="badge__asset"><span v-else class="badge__dot" aria-hidden="true"/>
     {{ STATUS_LABELS[status] }}
   </span>
 </template>
@@ -17,12 +17,12 @@ defineProps<{ status: RequestStatus }>()
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 3px 10px 3px 8px;
+  padding: 4px 8px;
   border-radius: 999px;
   background: color-mix(in srgb, var(--tone) 16%, transparent);
   font-size: var(--fs-xs);
-  font-weight: 500;
-  line-height: 1.4;
+  font-weight: 600;
+  line-height: 16px;
   color: color-mix(in srgb, var(--tone) 70%, white);
   white-space: nowrap;
 }
@@ -43,12 +43,14 @@ defineProps<{ status: RequestStatus }>()
 }
 
 .badge--in_progress {
-  --tone: var(--c-info);
+  --tone: #ffda7b;
 }
 
 .badge--waiting {
-  --tone: var(--c-warning);
+  --tone: #b9b3d4;
 }
+.badge__asset{display:block;flex:none}
+.badge--escalated{--tone:#ff97a7}
 
 .badge--resolved {
   --tone: var(--c-success);

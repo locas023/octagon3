@@ -3,8 +3,8 @@
   "pages": [
     {
       "path": "/",
-      "htmlBytes": 18083,
-      "requestMs": 736,
+      "htmlBytes": 18072,
+      "requestMs": 44,
       "widths": [
         360,
         768,
@@ -13,8 +13,8 @@
     },
     {
       "path": "/faq",
-      "htmlBytes": 13841,
-      "requestMs": 312,
+      "htmlBytes": 13830,
+      "requestMs": 9,
       "widths": [
         360,
         768,
@@ -23,8 +23,8 @@
     },
     {
       "path": "/help",
-      "htmlBytes": 14136,
-      "requestMs": 351,
+      "htmlBytes": 14125,
+      "requestMs": 8,
       "widths": [
         360,
         768,
@@ -33,8 +33,8 @@
     },
     {
       "path": "/articles",
-      "htmlBytes": 14115,
-      "requestMs": 315,
+      "htmlBytes": 14104,
+      "requestMs": 15,
       "widths": [
         360,
         768,
@@ -43,8 +43,8 @@
     },
     {
       "path": "/articles/first-request",
-      "htmlBytes": 12409,
-      "requestMs": 575,
+      "htmlBytes": 12398,
+      "requestMs": 7,
       "widths": [
         360,
         768,

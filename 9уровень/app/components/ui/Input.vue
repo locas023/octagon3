@@ -14,6 +14,8 @@ const props = withDefaults(
     hideLabel?: boolean
     multiline?: boolean
     rows?: number
+    minlength?: number | string
+    maxlength?: number | string
   }>(),
   {
     type: 'text',
@@ -55,6 +57,8 @@ defineExpose({ focus: () => field.value?.focus() })
       :disabled="disabled"
       :required="required"
       :rows="rows"
+      :minlength="minlength"
+      :maxlength="maxlength"
       :aria-invalid="error ? 'true' : undefined"
       :aria-describedby="describedBy"
     />
@@ -69,6 +73,8 @@ defineExpose({ focus: () => field.value?.focus() })
       :disabled="disabled"
       :required="required"
       :autocomplete="autocomplete"
+      :minlength="minlength"
+      :maxlength="maxlength"
       :aria-invalid="error ? 'true' : undefined"
       :aria-describedby="describedBy"
     >

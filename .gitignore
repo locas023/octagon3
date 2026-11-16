@@ -9,5 +9,14 @@
 test-results/
 *.log
 .claude/
+/.local-tools/
+/[2-9]уровень.txt
+/DOCKER-SETUP.md
+/enable-docker-prerequisites.ps1
+/install-docker-wsl.ps1
+/9уровень/docs/audit/screenshots/
+/[6-8]уровень/docs/performance/*/home.json
+/[6-8]уровень/docs/performance/*/faq.json
+/[6-8]уровень/docs/performance/*/help.json
 
 **/test-results-*/

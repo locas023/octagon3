@@ -10,7 +10,8 @@ export default defineEventHandler(async event=>{
  if(!valid)throw createError({statusCode:415,message:'Разрешены PDF, PNG и JPEG с корректным содержимым'})
  const name=file.filename.replace(/[\\/\x00-\x1f]/g,'_').slice(0,200)
  return database().begin(async sql=>{
-  await sql`SELECT id FROM requests WHERE id=${item.id} FOR UPDATE`
+  const locked=await sql`SELECT id,archived_at FROM requests WHERE id=${item.id} FOR UPDATE`
+  if(locked[0]?.archived_at)throw createError({statusCode:409,message:'Архивная заявка доступна только для чтения'})
   const count=await sql`SELECT count(*)::int AS count FROM attachments WHERE request_id=${item.id}`
   if(count[0]!.count>=5)throw createError({statusCode:422,message:'Не более 5 файлов на заявку'})
   const id=crypto.randomUUID()

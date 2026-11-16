@@ -27,6 +27,7 @@ export function parseRequestListQuery(query: Record<string, unknown>): Required<
   const sort = SORTS.find((value) => value === query.sort) ?? 'newest'
 
   return {
+    archive: query.archive === 'archived' ? 'archived' : 'active',
     q: typeof query.q === 'string' ? query.q.trim().slice(0, 100) : '',
     status: isRequestStatus(query.status) ? query.status : undefined,
     priority: isRequestPriority(query.priority) ? query.priority : undefined,

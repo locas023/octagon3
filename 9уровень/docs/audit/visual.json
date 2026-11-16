@@ -1,0 +1,198 @@
+{
+  "scope": "Four dashboard frames; geometric checks, not a pixel diff of every state",
+  "results": [
+    {
+      "role": "operator",
+      "frame": "1:38199",
+      "viewport": "1280×900",
+      "geometry": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 80
+        },
+        "title": {
+          "x": 64,
+          "y": 104,
+          "width": 191.515625,
+          "height": 36
+        },
+        "card": {
+          "x": 64,
+          "y": 208,
+          "width": 276,
+          "height": 154
+        },
+        "recent": {
+          "x": 64,
+          "y": 386,
+          "width": 200.125,
+          "height": 28
+        },
+        "button": {
+          "x": 64,
+          "y": 438,
+          "width": 116.015625,
+          "height": 40
+        },
+        "table": {
+          "x": 64,
+          "y": 502,
+          "width": 1152,
+          "height": 212
+        },
+        "head": {
+          "x": 65,
+          "y": 503,
+          "width": 1150,
+          "height": 48
+        },
+        "row": {
+          "x": 65,
+          "y": 551,
+          "width": 1150,
+          "height": 54
+        },
+        "cards": 4,
+        "titleFont": "28px"
+      }
+    },
+    {
+      "role": "client",
+      "frame": "1:38270",
+      "viewport": "1280×900",
+      "geometry": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 80
+        },
+        "title": {
+          "x": 64,
+          "y": 104,
+          "width": 187.34375,
+          "height": 36
+        },
+        "card": null,
+        "recent": null,
+        "button": {
+          "x": 64,
+          "y": 208,
+          "width": 116.015625,
+          "height": 40
+        },
+        "table": {
+          "x": 64,
+          "y": 272,
+          "width": 1152,
+          "height": 212
+        },
+        "head": {
+          "x": 65,
+          "y": 273,
+          "width": 1150,
+          "height": 48
+        },
+        "row": {
+          "x": 65,
+          "y": 321,
+          "width": 1150,
+          "height": 54
+        },
+        "cards": 0,
+        "titleFont": "28px"
+      }
+    },
+    {
+      "role": "agent",
+      "frame": "1:38244",
+      "viewport": "1280×900",
+      "geometry": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 80
+        },
+        "title": {
+          "x": 64,
+          "y": 104,
+          "width": 204.828125,
+          "height": 36
+        },
+        "card": null,
+        "recent": null,
+        "button": null,
+        "table": {
+          "x": 64,
+          "y": 208,
+          "width": 1152,
+          "height": 212
+        },
+        "head": {
+          "x": 65,
+          "y": 209,
+          "width": 1150,
+          "height": 48
+        },
+        "row": {
+          "x": 65,
+          "y": 257,
+          "width": 1150,
+          "height": 54
+        },
+        "cards": 0,
+        "titleFont": "28px"
+      }
+    },
+    {
+      "role": "admin",
+      "frame": "1:38296",
+      "viewport": "1280×900",
+      "geometry": {
+        "header": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 80
+        },
+        "title": {
+          "x": 64,
+          "y": 104,
+          "width": 111,
+          "height": 36
+        },
+        "card": null,
+        "recent": {
+          "x": 64,
+          "y": 272,
+          "width": 200.125,
+          "height": 28
+        },
+        "button": null,
+        "table": {
+          "x": 64,
+          "y": 324,
+          "width": 1152,
+          "height": 212
+        },
+        "head": {
+          "x": 65,
+          "y": 325,
+          "width": 1150,
+          "height": 48
+        },
+        "row": {
+          "x": 65,
+          "y": 373,
+          "width": 1150,
+          "height": 54
+        },
+        "cards": 0,
+        "titleFont": "28px"
+      }
+    }
+  ]
+}

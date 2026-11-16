@@ -6,10 +6,13 @@ import { findRequest } from './requests'
 
 export async function addComment(event:H3Event){
  const actor=await requireUser(event),item=await findRequest(event)
+ if(item.archivedAt)throw createError({statusCode:409,message:'Архивная заявка доступна только для чтения'})
  const parsed=z.object({text:z.string().trim().min(1).max(5000),key:z.string().min(1).max(100)}).strict().safeParse(await readBody(event))
  if(!parsed.success)throw createError({statusCode:422,message:'Введите комментарий до 5000 символов'})
  const body=parsed.data,createdAt=new Date().toISOString()
  return database().begin(async sql=>{
+  const locked=await sql`SELECT archived_at FROM requests WHERE id=${item.id} FOR UPDATE`
+  if(locked[0]?.archived_at)throw createError({statusCode:409,message:'Архивная заявка доступна только для чтения'})
   const comment={id:body.key,text:body.text,authorId:actor.id,createdAt}
   const added=await sql`INSERT INTO comments(id,request_id,data) VALUES(${body.key},${item.id},${sql.json(comment)}) ON CONFLICT(id) DO NOTHING RETURNING id`
   if(added.length){

@@ -8,7 +8,7 @@ const DEFAULT_USER: CurrentUser = {
   role: 'operator',
 }
 
-/** Текущий пользователь (mock, без backend). */
+/** Пользователь текущей серверной сессии; заполняется auth middleware. */
 export function useCurrentUser() {
   return useState<CurrentUser>('current-user', () => ({ ...DEFAULT_USER }))
 }
