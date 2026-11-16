@@ -8,7 +8,7 @@ Nuxt 4, Vue 3, TypeScript, Nitro, Pinia, PostgreSQL 17, Zod, Playwright, Vitest,
 
 ## Демо и запуск
 
-Локальный Docker demo: [127.0.0.1:3019](http://127.0.0.1:3019). Публичный URL появится после подключения облачной базы и Render; инструкция в [DEPLOY.md](docs/DEPLOY.md).
+Публичное демо: **[octagon3-workflow.onrender.com](https://octagon3-workflow.onrender.com)** — Render Free + PostgreSQL Neon. После простоя первый запрос может занять около минуты. Локальный Docker demo: [127.0.0.1:3019](http://127.0.0.1:3019). Инструкция воспроизведения: [DEPLOY.md](docs/DEPLOY.md).
 
 Из этой папки в PowerShell при запущенном Docker Desktop:
 
@@ -61,7 +61,7 @@ node tests/public-check.mjs
 node tests/accessibility.mjs
 ```
 
-Для E2E нужен Edge (`npx.cmd playwright install msedge`), для видео также `npx.cmd playwright install ffmpeg`. Тесты создают учебные записи. Проверка сохранности Docker-тома: `npm.cmd run test:docker`; она перезапускает контейнеры. Браузерных сценариев — 10; проверка доступности охватывает 35 сочетаний роли и маршрута, ширины 360/768/1280.
+Для E2E нужен Edge (`npx.cmd playwright install msedge`), для видео также `npx.cmd playwright install ffmpeg`. Тесты создают учебные записи. Проверка сохранности Docker-тома: `npm.cmd run test:docker`; она перезапускает контейнеры. Браузерных сценариев — 11; проверка доступности охватывает 35 сочетаний роли и маршрута, ширины 360/768/1280.
 
 [GitHub Actions](https://github.com/locas023/octagon3/actions) проверяет финальный снимок с PostgreSQL на чистом runner. [Release audit](docs/RELEASE-AUDIT.md) отделяет выполненные проверки от ограничений.
 

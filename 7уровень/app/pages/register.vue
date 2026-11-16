@@ -3,6 +3,8 @@ definePageMeta({ layout: 'public', minimalHeader: true })
 useHead({ title: 'Создать аккаунт' })
 const name = ref(''), company = ref(''), email = ref(''), password = ref('')
 const pending = ref(false), error = ref('')
+const hydrated = ref(false)
+onMounted(() => { hydrated.value = true })
 async function submit() {
   if (pending.value) return
   pending.value = true
@@ -19,13 +21,13 @@ async function submit() {
     <section class="panel registration__card" aria-labelledby="registration-title">
       <h1 id="registration-title">Создать аккаунт</h1>
       <p class="muted">Зарегистрируйтесь, чтобы отправлять заявки</p>
-      <form @submit.prevent="submit">
-        <UiInput v-model="name" label="Имя" autocomplete="name" minlength="2" maxlength="120" required />
-        <UiInput v-model="company" label="Компания" autocomplete="organization" minlength="2" maxlength="200" required />
-        <UiInput v-model="email" label="Электронная почта" type="email" autocomplete="email" required />
-        <UiInput v-model="password" label="Пароль" type="password" autocomplete="new-password" minlength="10" maxlength="200" required />
+      <form :aria-busy="!hydrated" @submit.prevent="submit">
+        <UiInput v-model="name" :disabled="!hydrated" label="Имя" autocomplete="name" minlength="2" maxlength="120" required />
+        <UiInput v-model="company" :disabled="!hydrated" label="Компания" autocomplete="organization" minlength="2" maxlength="200" required />
+        <UiInput v-model="email" :disabled="!hydrated" label="Электронная почта" type="email" autocomplete="email" required />
+        <UiInput v-model="password" :disabled="!hydrated" label="Пароль" type="password" autocomplete="new-password" minlength="10" maxlength="200" required />
         <p class="muted">Пароль — не менее 10 символов.</p>
-        <UiButton type="submit" :disabled="pending" :loading="pending">Зарегистрироваться</UiButton>
+        <UiButton type="submit" :disabled="pending || !hydrated" :loading="pending">Зарегистрироваться</UiButton>
         <p v-if="error" role="alert">{{ error }}</p>
       </form>
       <NuxtLink to="/login">Уже есть аккаунт? Войти</NuxtLink>

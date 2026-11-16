@@ -10,6 +10,8 @@ const email = ref('')
 const password = ref('')
 const submitted = ref(false)
 const loading = ref(false)
+const hydrated = ref(false)
+onMounted(() => { hydrated.value = true })
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -46,13 +48,14 @@ async function submit() {
       <h1 id="login-title" class="login__title">С возвращением</h1>
       <p class="login__subtitle">Войдите для работы с заявками</p>
 
-      <p v-if="$route.query.registered" role="status">Аккаунт создан. Войдите с вашим email и паролем.</p><p role="alert">{{ loginError }}</p><form class="login__form" novalidate @submit.prevent="submit">
+      <p v-if="$route.query.registered" role="status">Аккаунт создан. Войдите с вашим email и паролем.</p><p role="alert">{{ loginError }}</p><form class="login__form" novalidate :aria-busy="!hydrated" @submit.prevent="submit">
         <UiInput
           v-model="email"
           label="Электронная почта"
           type="email"
           placeholder="0000@mail.demo"
           autocomplete="email"
+          :disabled="!hydrated"
           :error="emailError"
           required
         />
@@ -62,10 +65,11 @@ async function submit() {
           type="password"
           placeholder="••••••••"
           autocomplete="current-password"
+          :disabled="!hydrated"
           :error="passwordError"
           required
         />
-        <UiButton type="submit" :loading="loading" class="login__submit">Войти</UiButton>
+        <UiButton type="submit" :disabled="!hydrated" :loading="loading" class="login__submit">Войти</UiButton>
       </form>
 
       <p class="login__footer">

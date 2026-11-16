@@ -1,1 +1,4 @@
-export default defineNuxtPlugin(app=> {app.hook('app:mounted',()=>{document.documentElement.dataset.appReady='true'})})
+export default defineNuxtPlugin(() => {
+  // app:mounted can fire while an async page is still hydrating.
+  onNuxtReady(() => { document.documentElement.dataset.appReady = 'true' })
+})

@@ -1,5 +1,7 @@
 # WorkFlow — учебные уровни
 
+**[Открыть публичное демо](https://octagon3-workflow.onrender.com)** · [CI](https://github.com/locas023/octagon3/actions) · [Финальная версия и документация](9уровень/README.md)
+
 Каждый уровень в отдельной папке. Для проверки выберите папку, выполните `npm.cmd install`, затем `npm.cmd run dev`. Уровни 4–9 требуют PostgreSQL, `.env` и предварительный `npm.cmd run db:setup`.
 
 | Папка | Адрес | Основное изменение |
