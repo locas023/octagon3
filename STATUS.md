@@ -16,6 +16,8 @@
 
 Запуск в отдельном Compose-проекте с новой пустой базой прошёл: миграции, seed, API/business/admin-analytics и все 10 E2E. Проверены сохранность заявки и сессии после down/up и фоновое создание SLA-уведомления без запроса страницы. Видео записано: `9уровень/docs/demo/workflow-demo.webm`.
 
-Репозиторий: https://github.com/locas023/octagon3. Бесплатный deployment подготовлен через корневой render.yaml и внешнюю PostgreSQL Neon; облачные аккаунты и публичный URL пока не подключены. Фактическое состояние CI и tag проверяются в GitHub. Не считать наличие конфигурации подтверждением прошедшего внешнего CI/deploy.
+Предыдущие самостоятельные снимки тоже проверены непосредственно: уровень 5 — API integration и 9 E2E; уровень 8 — API/business/admin-analytics и 10 E2E. Дополнительные regression tests перенесены в уровни 5–8; lint прошёл во всех четырёх папках.
+
+Репозиторий опубликован: https://github.com/locas023/octagon3. [Первый полный GitHub CI прошёл](https://github.com/locas023/octagon3/actions/runs/43856865143): чистый Linux runner, PostgreSQL service, typecheck/unit/lint/architecture/build/API/business/analytics/E2E/SSR. Бесплатный deployment подготовлен через корневой render.yaml и внешнюю PostgreSQL Neon; облачные аккаунты и публичный URL пока не подключены. Локальный успех и CI не означают завершённый внешний deploy.
 
 Ограничения: нет полевых INP и нагрузочного тестирования, полного ручного screen reader аудита и pixel-perfect проверки каждого состояния Figma. Планировщик зависит от работающего процесса. В npm audit остаются low/moderate зависимости; high/critical нет. Подробности — `9уровень/docs/TRADEOFFS.md`.

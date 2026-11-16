@@ -1,5 +1,7 @@
 # WorkFlow
 
+[![CI](https://github.com/locas023/octagon3/actions/workflows/ci.yml/badge.svg)](https://github.com/locas023/octagon3/actions/workflows/ci.yml)
+
 Учебная система поддержки: клиент создаёт заявку, оператор назначает исполнителя, исполнитель фиксирует работу и решение. Администратор управляет справочниками, SLA и аналитикой. Четыре роли получают разные права на сервере и в интерфейсе.
 
 Nuxt 4, Vue 3, TypeScript, Nitro, Pinia, PostgreSQL 17, Zod, Playwright, Vitest, Docker Compose. Это финальный самостоятельный снимок; папки 1–8 показывают предыдущие этапы.

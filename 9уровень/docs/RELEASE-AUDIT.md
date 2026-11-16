@@ -12,4 +12,4 @@ Env исключены из Git и Docker context; demo-аккаунты вым�
 
 Чистый Compose-проект с новой базой прошёл миграции, seed, API/business/admin-analytics и все 10 E2E. Проверены background SLA и сохранность сессии/заявки после down/up. Краткое demo-видео записано и просмотрен контрольный кадр.
 
-GitHub CI, release tag и внешний deployment следует проверять по состоянию репозитория и STATUS.md. Локальный успех не доказывает успешный публичный deploy; cloud setup описан в DEPLOY.md.
+[GitHub CI на чистом Linux runner прошёл](https://github.com/locas023/octagon3/actions/runs/43856865143): миграции, сборка, unit, lint, API и 10 E2E, public SSR. Release tag проверяется в репозитории. Публичный cloud deployment ещё требует подключения аккаунтов; инструкция в DEPLOY.md.
