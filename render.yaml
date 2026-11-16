@@ -3,8 +3,8 @@ services:
     name: octagon3-workflow
     runtime: docker
     plan: free
-    dockerfilePath: ./9уровень/Dockerfile
-    dockerContext: ./9уровень
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
     healthCheckPath: /
     envVars:
       - key: DATABASE_URL

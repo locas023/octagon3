@@ -1,6 +1,6 @@
 # Бесплатное demo: Render + Neon
 
-Источник: https://github.com/locas023/octagon3, финальный проект в `9уровень`. Render использует корневой `render.yaml`; PostgreSQL хранится отдельно в Neon. Локальный Docker остаётся полностью самостоятельным вариантом запуска.
+Источник: https://github.com/locas023/octagon3, финальный проект в `9уровень`. Render использует корневые `render.yaml` и `Dockerfile`: его поля путей не принимают кириллицу. Dockerfile копирует исходники из папки уровня; `.dockerignore` исключает локальные env и зависимости. PostgreSQL хранится отдельно в Neon. Локальный Docker Compose внутри уровня остаётся самостоятельным вариантом запуска.
 
 1. Войти в [Neon](https://console.neon.tech), создать Free project и базу. Скопировать PostgreSQL connection string с `sslmode=require`. Использовать отдельный demo-проект без личных данных.
 2. Войти в [Render](https://dashboard.render.com), открыть [Blueprint deploy](https://render.com/deploy?repo=https://github.com/locas023/octagon3), подключить репозиторий. План сервиса в blueprint — free.
