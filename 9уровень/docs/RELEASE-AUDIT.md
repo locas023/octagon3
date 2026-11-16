@@ -2,7 +2,7 @@
 
 Локальная проверка финального Docker-снимка, 16 ноября 2026. Приложение и PostgreSQL healthy; runtime uid 1000, build tooling отсутствует в runtime. Compose запускает миграции и seed, повторный запуск не сбрасывает данные.
 
-Проверено: typecheck уровней 4–9; unit и Vue/TS/JS lint уровней 5–9. Финал: 10 E2E, API integration, business integration, административный CRUD и историческая аналитика, SQL literal search, архитектурные границы. Комментарий сохраняется в ответе после PATCH заявки. Отдельный тест проверяет заявку и сессию после Docker down/up без удаления тома.
+Проверено: typecheck уровней 4–9; unit и Vue/TS/JS lint уровней 5–9. Финал: 11 E2E, API integration, business integration, административный CRUD и историческая аналитика, SQL literal search, архитектурные границы. Комментарий сохраняется в ответе после PATCH заявки. Отдельный тест проверяет заявку и сессию после Docker down/up без удаления тома.
 
 UI-аудит: 35 сочетаний роли/маршрута, overflow 360/768/1280, axe WCAG 2 A/AA + 2.1 AA на desktop. JSON и screenshots в `audit/`. Keyboard E2E проверяет вход, меню со стрелками/Escape, modal focus return. Публичный SSR проверен отдельно; замеры Lighthouse и ограничения — PERFORMANCE.md.
 
@@ -12,4 +12,4 @@ Env исключены из Git и Docker context; demo-аккаунты вым�
 
 Чистый Compose-проект с новой базой прошёл миграции, seed, API/business/admin-analytics и все 10 E2E. Проверены background SLA и сохранность сессии/заявки после down/up. Краткое demo-видео записано и просмотрен контрольный кадр.
 
-[GitHub CI на чистом Linux runner прошёл](https://github.com/locas023/octagon3/actions/runs/43856865143): миграции, сборка, unit, lint, API и 10 E2E, public SSR. Release tag проверяется в репозитории. Публичный cloud deployment ещё требует подключения аккаунтов; инструкция в DEPLOY.md.
+[GitHub CI на чистом Linux runner прошёл](https://github.com/locas023/octagon3/actions/runs/43861560069): миграции, сборка, unit, lint, API и 11 E2E, public SSR. Публичный deployment работает: https://octagon3-workflow.onrender.com. На нём прошли API/business/admin-analytics и SSR-проверки; детали и итог браузерных тестов — DEPLOYMENT.md. Инструкция воспроизведения — DEPLOY.md.

@@ -4,7 +4,7 @@
     {
       "path": "/",
       "htmlBytes": 18083,
-      "requestMs": 704,
+      "requestMs": 736,
       "widths": [
         360,
         768,
@@ -14,7 +14,7 @@
     {
       "path": "/faq",
       "htmlBytes": 13841,
-      "requestMs": 339,
+      "requestMs": 312,
       "widths": [
         360,
         768,
@@ -24,7 +24,7 @@
     {
       "path": "/help",
       "htmlBytes": 14136,
-      "requestMs": 415,
+      "requestMs": 351,
       "widths": [
         360,
         768,
@@ -34,7 +34,7 @@
     {
       "path": "/articles",
       "htmlBytes": 14115,
-      "requestMs": 308,
+      "requestMs": 315,
       "widths": [
         360,
         768,
@@ -44,7 +44,7 @@
     {
       "path": "/articles/first-request",
       "htmlBytes": 12409,
-      "requestMs": 322,
+      "requestMs": 575,
       "widths": [
         360,
         768,
