@@ -12,4 +12,4 @@ Env исключены из Git и Docker context; demo-аккаунты вым�
 
 Чистый Compose-проект с новой базой прошёл миграции, seed, API/business/admin-analytics и все 10 E2E. Проверены background SLA и сохранность сессии/заявки после down/up. Краткое demo-видео записано и просмотрен контрольный кадр.
 
-[GitHub CI на чистом Linux runner прошёл](https://github.com/locas023/octagon3/actions/runs/43861560069): миграции, сборка, unit, lint, API и 11 E2E, public SSR. Публичный deployment работает: https://octagon3-workflow.onrender.com. На нём прошли API/business/admin-analytics и SSR-проверки; детали и итог браузерных тестов — DEPLOYMENT.md. Инструкция воспроизведения — DEPLOY.md.
+[GitHub CI на чистом Linux runner прошёл](https://github.com/locas023/octagon3/actions/runs/43870225376): миграции, сборка, unit, lint, API, archive/rating и 12 E2E, public SSR. Публичный deployment работает: https://octagon3-workflow.onrender.com. На нём прошли API/business/admin-analytics/lifecycle; 22 ноября повторно прошли все 12 E2E и SSR-проверки; детали и итог браузерных тестов — DEPLOYMENT.md. Инструкция воспроизведения — DEPLOY.md.

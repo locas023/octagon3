@@ -1,6 +1,8 @@
 import {test,expect} from '@playwright/test'
 
 test('client rates a resolution; admin archives and restores it with confirmations',async({page})=>{
+  // Several role changes and sequential writes also run against the remote Free demo.
+  test.setTimeout(90_000)
   const login=async(role:string)=>{expect((await page.request.post('/api/auth/login',{data:{email:`${role}@workflow.demo`,password:'WorkflowDemo2026!'}})).status()).toBe(200)}
   await login('client')
   const title=`Archive UI ${crypto.randomUUID()}`
